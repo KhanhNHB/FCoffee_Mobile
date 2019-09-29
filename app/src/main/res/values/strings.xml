@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">F Coffee</string>
+    <string name="title_bottom_table">Bàn uống</string>
+    <string name="title_bottom_account">Cá Nhân</string>
+    <string name="title_bottom_statistics">Thống kê</string>
+    <string name="title_bottom_logout">Đăng xuất</string>
+    <string name="title_ll_button_store">Cửa hàng</string>
+    <string name="title_ll_button_accumulated_points">Điểm tích lũy</string>
+    <string name="title_ll_button_location">Địa điểm</string>
+</resources>
