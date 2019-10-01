@@ -15,12 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fcoffee.R;
 import com.example.fcoffee.modules.Table.activity.TableDetailActivity;
-import com.example.fcoffee.modules.Table.model.TableList;
+import com.example.fcoffee.modules.Table.model.DTOresponse.DTOTableList;
 
 public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> {
     private Context mContext;
-    private TableList mTables;
-    public TableAdapter(Context mContext, TableList Tables) {
+    private DTOTableList mTables;
+    public TableAdapter(Context mContext, DTOTableList Tables) {
         this.mContext = mContext;
         this.mTables = Tables;
     }

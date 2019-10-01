@@ -11,9 +11,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fcoffee.R;
-import com.example.fcoffee.Login.view.LoginView;
 import com.example.fcoffee.modules.Account.models.Account;
 import com.example.fcoffee.modules.Account.presenters.LoginPresenter;
+import com.example.fcoffee.modules.Account.views.LoginView;
 import com.example.fcoffee.modules.Table.activity.TableActivity;
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
@@ -52,19 +52,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         });
     }
 
-    private boolean isValid(Account account) {
-        if (account.getUsername() == null || account.getUsername().trim().length() == 0) {
-            Toast.makeText(this, "Vui lòng điền tên đăng nhập!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (account.getPassword() == null || account.getPassword().trim().length() == 0) {
-            Toast.makeText(this, "Vui lòng điền mật khẩu!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        return true;
-    }
-
-
     @Override
     public void onLoginSuccess() {
         Intent intent = new Intent(LoginActivity.this, TableActivity.class);
@@ -73,6 +60,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void onLoginFail(String message) {
-
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

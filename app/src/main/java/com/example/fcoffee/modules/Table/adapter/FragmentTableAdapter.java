@@ -4,10 +4,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.example.fcoffee.fragments.StatisticsFragment;
-import com.example.fcoffee.fragments.TableFragment;
-import com.example.fcoffee.fragments.AccountFragment;
-import com.example.fcoffee.fragments.LogoutFragment;
+import com.example.fcoffee.modules.Statistics.activity.StatisticsFragment;
+import com.example.fcoffee.modules.Table.activity.TableFragment;
+import com.example.fcoffee.modules.Account.activities.AccountFragment;
+import com.example.fcoffee.modules.Account.activities.LogoutFragment;
 
 public class FragmentTableAdapter extends FragmentStatePagerAdapter {
     private static int NUM_PAGE = 4;
