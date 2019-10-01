@@ -1,4 +1,4 @@
-package com.example.fcoffee.fragments;
+package com.example.fcoffee.modules.Table.activity;
 
 import android.os.Bundle;
 
@@ -14,8 +14,10 @@ import android.widget.Toast;
 
 import com.example.fcoffee.R;
 import com.example.fcoffee.modules.Table.adapter.TableAdapter;
-import com.example.fcoffee.modules.Table.model.TableList;
+import com.example.fcoffee.modules.Table.model.DTOresponse.DTOTableList;
+import com.example.fcoffee.modules.Table.presenter.TablePresenter;
 import com.example.fcoffee.modules.Table.services.TableService;
+import com.example.fcoffee.modules.Table.view.TableView;
 import com.example.fcoffee.utils.APIUtils;
 
 import retrofit2.Call;
@@ -23,13 +25,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class TableFragment extends Fragment {
+public class TableFragment extends Fragment implements TableView {
 
     private View mView;
     private RecyclerView mRecyclerView;
     private TableAdapter mTableAdapter;
-    private TableList mTables;
-    private TableService mService;
+    private DTOTableList mTables;
+    private TablePresenter mTablePresenter;
 
     public static TableFragment newInstance() {
         TableFragment fragment = new TableFragment();
@@ -55,34 +57,25 @@ public class TableFragment extends Fragment {
     private void initView() {
         mRecyclerView = mView.findViewById(R.id.rcv_table);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
-
         mRecyclerView.setLayoutManager(gridLayoutManager);
-
-        mService = APIUtils.getTableService();
     }
 
     private void initData() {
-        Call<TableList> call = mService.get();
-        call.enqueue(new Callback<TableList>() {
-            @Override
-            public void onResponse(Call<TableList> call, Response<TableList> response) {
-                if (response.code() == 200) {
-                    mTables = response.body();
-                    updateRcv();
-                } else {
-                    Toast.makeText(mView.getContext(), "Error: " + response.code(), Toast.LENGTH_SHORT).show();
-                }
-            }
+        mTablePresenter = new TablePresenter(this);
+        mTablePresenter.getAll(this);
+    }
 
-            @Override
-            public void onFailure(Call<TableList> call, Throwable t) {
-                Toast.makeText(mView.getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d("ERROR: ", t.getMessage());
-            }
-        });
+    @Override
+    public void onTableSuccessGetAll(DTOTableList dto) {
+        if (dto != null) {
+            mTables = dto;
+            updateRcv();
+        }
+    }
 
-
+    @Override
+    public void onTableFail(String message) {
+        Toast.makeText(mView.getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     private void updateRcv() {

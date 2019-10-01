@@ -1,4 +1,4 @@
-package com.example.fcoffee.fragments;
+package com.example.fcoffee.modules.Statistics.activity;
 
 import android.os.Bundle;
 
@@ -11,12 +11,12 @@ import android.view.ViewGroup;
 import com.example.fcoffee.R;
 
 
-public class LogoutFragment extends Fragment {
+public class StatisticsFragment extends Fragment {
 
     private View mView;
 
-    public static LogoutFragment newInstance() {
-        LogoutFragment fragment = new LogoutFragment();
+    public static StatisticsFragment newInstance() {
+        StatisticsFragment fragment = new StatisticsFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;

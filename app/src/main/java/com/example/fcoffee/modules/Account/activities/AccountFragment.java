@@ -1,4 +1,4 @@
-package com.example.fcoffee.fragments;
+package com.example.fcoffee.modules.Account.activities;
 
 import android.os.Bundle;
 

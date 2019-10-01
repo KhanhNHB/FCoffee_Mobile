@@ -22,7 +22,7 @@ public class RetrofitClient {
 
                 Request.Builder newRequest = request.newBuilder().header(
                         "Authorization",
-                        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrb2tvbWkiLCJKV1RBdXRob3JpdGllc0tleSI6IlN0YWZmIiwiZXhwIjoxNTY5ODQzNTI2fQ.ofyMBXnpS4qFCAZY0SFaOxuqhSE0_InRLjTxzQg93OEJXMmf53icZ6t9CPpZeaqwK7NIGT7d9mKy_kW4NAByxg"
+                        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrb2tvbWkiLCJKV1RBdXRob3JpdGllc0tleSI6IlN0YWZmIiwiZXhwIjoxNTcwMDI3NzM3fQ.2uAVr2Btp5W3CF6nv37_uLsE-RYdUZns1wOJBGOB6PNkwQ2H6d54Lov7PK13jl4AbGdyZFNX3cuvMNkVP6xXrQ"
                 );
 
                 return chain.proceed(newRequest.build());
