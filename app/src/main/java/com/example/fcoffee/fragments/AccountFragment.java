@@ -12,9 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.fcoffee.R;
-import com.example.fcoffee.models.Account;
-import com.example.fcoffee.services.AccountService;
-import com.example.fcoffee.utils.APIUtils;
+import com.example.fcoffee.modules.Account.models.Account;
+import com.example.fcoffee.modules.Account.services.AccountService;
 
 
 public class AccountFragment extends Fragment {

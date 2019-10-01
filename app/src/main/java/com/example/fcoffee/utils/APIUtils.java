@@ -1,9 +1,9 @@
 package com.example.fcoffee.utils;
 
+import com.example.fcoffee.modules.Table.services.TableService;
 import com.example.fcoffee.networks.RetrofitClient;
-import com.example.fcoffee.services.AccountService;
-import com.example.fcoffee.services.ManagerService;
-import com.example.fcoffee.services.TableService;
+import com.example.fcoffee.modules.Account.services.AccountService;
+import com.example.fcoffee.modules.Management.services.ManagementService;
 
 public class APIUtils {
     private APIUtils() {}
@@ -18,7 +18,7 @@ public class APIUtils {
         return RetrofitClient.getClient(API_URL_BASE).create(AccountService.class);
     }
 
-    public static ManagerService getManagerService() {
-        return RetrofitClient.getClient(API_URL_BASE).create(ManagerService.class);
+    public static ManagementService getManagerService() {
+        return RetrofitClient.getClient(API_URL_BASE).create(ManagementService.class);
     }
 }

@@ -13,12 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.fcoffee.R;
-import com.example.fcoffee.activities.LoginActivity;
-import com.example.fcoffee.activities.TableActivity;
-import com.example.fcoffee.adaptes.TableAdapter;
-import com.example.fcoffee.models.Table;
-import com.example.fcoffee.models.TableList;
-import com.example.fcoffee.services.TableService;
+import com.example.fcoffee.modules.Table.adapter.TableAdapter;
+import com.example.fcoffee.modules.Table.model.TableList;
+import com.example.fcoffee.modules.Table.services.TableService;
 import com.example.fcoffee.utils.APIUtils;
 
 import retrofit2.Call;
@@ -76,13 +73,12 @@ public class TableFragment extends Fragment {
                 } else {
                     Toast.makeText(mView.getContext(), "Error: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override
             public void onFailure(Call<TableList> call, Throwable t) {
                 Toast.makeText(mView.getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d("ERROR +=+=+= ", t.getMessage());
+                Log.d("ERROR: ", t.getMessage());
             }
         });
 
