@@ -1,16 +1,20 @@
 package com.example.fcoffee.modules.Table.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fcoffee.R;
+import com.example.fcoffee.modules.Account.repositories.LoginRepository;
 import com.example.fcoffee.modules.Table.adapter.FragmentTableAdapter;
 
 
@@ -139,6 +143,29 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
         mTxtLogout.setTextColor(Color.parseColor("#FFFFFF"));
     }
 
+    private void logout() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Bạn có muốn đăng xuất không ?")
+                .setCancelable(false)
+                .setPositiveButton("Không", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Action for 'NO' Button
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("Có", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        LoginRepository.TOKEN = "";
+                        finish();
+                        Toast.makeText(getApplicationContext(), "Đã đăng xuất",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.setTitle("Đăng xuất");
+        alert.show();
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -155,8 +182,9 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
                 setPageAccount();
                 break;
             case R.id.ll_button_logout:
-                mViewPager.setCurrentItem(3);
-                setPageLogout();
+//                mViewPager.setCurrentItem(3);
+//                setPageLogout();
+                logout();
                 break;
         }
     }
