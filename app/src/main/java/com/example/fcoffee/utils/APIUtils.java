@@ -8,7 +8,7 @@ import com.example.fcoffee.modules.Management.services.ManagementService;
 public class APIUtils {
     private APIUtils() {}
 
-    public static final String API_URL_BASE = "http://10.0.2.2:8080/";
+    public static final String API_URL_BASE = "https://xavalo.herokuapp.com/";
 
     public static TableService getTableService() {
         return RetrofitClient.getClient(API_URL_BASE).create(TableService.class);
