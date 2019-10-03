@@ -1,6 +1,6 @@
 package com.example.fcoffee.modules.Management.services;
 
-import com.example.fcoffee.modules.Table.model.TableDetail;
+import com.example.fcoffee.modules.Table.model.DTOresponse.TableDetailData;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -13,7 +13,7 @@ import retrofit2.http.Path;
 public interface ManagementService {
 
     @GET("/api/manager/{tableNumber}")
-    Call<TableDetail> getTableByNumber(@Path("tableNumber") int tableNumber);
+    Call<TableDetailData> getTableByNumber(@Path("tableNumber") int tableNumber);
 
 //    @GET("/manager/getBill")
 //    Call<> getById(@Path("username") String username);

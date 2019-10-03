@@ -4,8 +4,5 @@
         android:angle="0.3"
         android:endColor="#FF9200"
         android:startColor="#FFB34E" />
-    <stroke
-        android:width="@dimen/dp1"
-        android:color="@color/colorLightGray" />
     <corners android:radius="@dimen/dp10" />
 </shape>

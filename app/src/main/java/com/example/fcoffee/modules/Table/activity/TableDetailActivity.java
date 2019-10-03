@@ -5,27 +5,25 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fcoffee.R;
+import com.example.fcoffee.modules.Drink.model.DTOresponse.DrinkData;
 import com.example.fcoffee.modules.Table.adapter.TableDetailAdapter;
-import com.example.fcoffee.modules.Table.model.TableDetail;
-import com.example.fcoffee.modules.Management.services.ManagementService;
-import com.example.fcoffee.utils.APIUtils;
+import com.example.fcoffee.modules.Table.model.DTOresponse.TableDetailData;
+import com.example.fcoffee.modules.Table.model.DTOresponse.TableData;
+import com.example.fcoffee.modules.Table.presenter.TablePresenter;
+import com.example.fcoffee.modules.Table.view.TableView;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class TableDetailActivity extends AppCompatActivity {
+public class TableDetailActivity extends AppCompatActivity implements TableView {
 
     private RecyclerView mRecyclerView;
-    private TableDetailActivity mTableDetailActivity;
-    private TableDetail mTableDetail;
-    private ManagementService mService;
+    private TableDetailData mTableDetail;
     private TableDetailAdapter mTableDetailAdapter;
     private int tableNumber;
+    private TablePresenter mTablePresenter;
+    private DrinkData mDrink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,47 +36,47 @@ public class TableDetailActivity extends AppCompatActivity {
 
     private void initView() {
         mRecyclerView = findViewById(R.id.rcv_table_detail);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mRecyclerView.setLayoutManager(gridLayoutManager);
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("anonymouse_number");
-
         tableNumber = bundle.getInt("table_number");
-
-        mService = APIUtils.getManagerService();
     }
 
     private void initData() {
-        try {
-            Call<TableDetail> call = mService.getTableByNumber(tableNumber);
+        mTablePresenter = new TablePresenter(this);
+        mTablePresenter.getByNumber(tableNumber);
+    }
 
-            call.enqueue(new Callback<TableDetail>() {
-                @Override
-                public void onResponse(Call<TableDetail> call, Response<TableDetail> response) {
-                    if (response.code() == 200) {
-                        mTableDetail = response.body();
+    @Override
+    public void onTableSuccessGetAll(TableData dto) {
+        // TODO- TableFragment
+    }
 
-                        updateRcv();
-                    } else {
-                        Toast.makeText(TableDetailActivity.this, "Erorr: " + response.code(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<TableDetail> call, Throwable t) {
-                    Toast.makeText(TableDetailActivity.this, "Erorr: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
+    @Override
+    public void onTableSuccessGetByNumber(TableDetailData tableDetail) {
+        if (tableDetail != null) {
+            mTableDetail = tableDetail;
         }
+    }
+
+    @Override
+    public void onDinkSuccessGetById(DrinkData drink) {
+        if (drink != null) {
+            mDrink = drink;
+            updateRcv();
+        }
+    }
+
+    @Override
+    public void onTableFail(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     private void updateRcv() {
         if (mTableDetailAdapter == null) {
-            mTableDetailAdapter = new TableDetailAdapter(this, mTableDetail);
+            mTableDetailAdapter = new TableDetailAdapter(this, mTableDetail, mDrink);
             mRecyclerView.setAdapter(mTableDetailAdapter);
         } else {
             mTableDetailAdapter.notifyDataSetChanged();

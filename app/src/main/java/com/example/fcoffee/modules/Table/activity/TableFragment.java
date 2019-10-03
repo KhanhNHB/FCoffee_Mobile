@@ -6,32 +6,27 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.fcoffee.R;
+import com.example.fcoffee.modules.Drink.model.DTOresponse.DrinkData;
 import com.example.fcoffee.modules.Table.adapter.TableAdapter;
-import com.example.fcoffee.modules.Table.model.DTOresponse.DTOTableList;
+import com.example.fcoffee.modules.Table.model.DTOresponse.TableDetailData;
+import com.example.fcoffee.modules.Table.model.DTOresponse.TableData;
 import com.example.fcoffee.modules.Table.presenter.TablePresenter;
-import com.example.fcoffee.modules.Table.services.TableService;
 import com.example.fcoffee.modules.Table.view.TableView;
-import com.example.fcoffee.utils.APIUtils;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 
 public class TableFragment extends Fragment implements TableView {
 
     private View mView;
     private RecyclerView mRecyclerView;
     private TableAdapter mTableAdapter;
-    private DTOTableList mTables;
+    private TableData mTables;
     private TablePresenter mTablePresenter;
+    private DrinkData drink;
 
     public static TableFragment newInstance() {
         TableFragment fragment = new TableFragment();
@@ -62,15 +57,25 @@ public class TableFragment extends Fragment implements TableView {
 
     private void initData() {
         mTablePresenter = new TablePresenter(this);
-        mTablePresenter.getAll(this);
+        mTablePresenter.getAll();
     }
 
     @Override
-    public void onTableSuccessGetAll(DTOTableList dto) {
+    public void onTableSuccessGetAll(TableData dto) {
         if (dto != null) {
             mTables = dto;
             updateRcv();
         }
+    }
+
+    @Override
+    public void onTableSuccessGetByNumber(TableDetailData tableDetail) {
+        // TODO- TableDetailActivity
+    }
+
+    @Override
+    public void onDinkSuccessGetById(DrinkData drink) {
+
     }
 
     @Override

@@ -1,13 +1,21 @@
 package com.example.fcoffee.modules.Table.repositories;
 
-import android.widget.Toast;
-
 import com.example.fcoffee.common.Error;
+import com.example.fcoffee.modules.BillInfo.model.BillInfo;
+import com.example.fcoffee.modules.Drink.model.DTOrequest.Drink;
+import com.example.fcoffee.modules.Drink.model.DTOresponse.DrinkData;
+import com.example.fcoffee.modules.Drink.repositories.DrinkRepository;
+import com.example.fcoffee.modules.Drink.services.DrinkService;
+import com.example.fcoffee.modules.Drink.view.DrinkView;
 import com.example.fcoffee.modules.Management.services.ManagementService;
-import com.example.fcoffee.modules.Table.model.DTOresponse.DTOTableList;
+import com.example.fcoffee.modules.Table.model.DTOresponse.TableDetailData;
+import com.example.fcoffee.modules.Table.model.DTOresponse.TableData;
 import com.example.fcoffee.modules.Table.services.TableService;
 import com.example.fcoffee.modules.Table.view.TableView;
 import com.example.fcoffee.utils.APIUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -15,20 +23,22 @@ import retrofit2.Response;
 
 public class TableRepository {
     TableService mTableService;
+    DrinkService mDrinkService;
     ManagementService mManagementService;
 
     public TableRepository() {
         mTableService = APIUtils.getTableService();
         mManagementService = APIUtils.getManagerService();
+        mDrinkService = APIUtils.getDrinkService();
     }
 
     public void getAll(final TableView tableView) {
-        Call<DTOTableList> call = mTableService.get();
-        call.enqueue(new Callback<DTOTableList>() {
+        Call<TableData> call = mTableService.get();
+        call.enqueue(new Callback<TableData>() {
             @Override
-            public void onResponse(Call<DTOTableList> call, Response<DTOTableList> response) {
+            public void onResponse(Call<TableData> call, Response<TableData> response) {
                 if (response.code() == 200) {
-                    DTOTableList dto = new DTOTableList();
+                    TableData dto = new TableData();
                     dto = response.body();
                     tableView.onTableSuccessGetAll(dto);
                 } else {
@@ -37,8 +47,61 @@ public class TableRepository {
             }
 
             @Override
-            public void onFailure(Call<DTOTableList> call, Throwable t) {
+            public void onFailure(Call<TableData> call, Throwable t) {
                 tableView.onTableFail(Error.TAG_ERROR_REQUEST + t.getMessage());
+            }
+        });
+    }
+
+    public void getByNumber(final int tableNumber, final TableView tableView) {
+        Call<TableDetailData> call = mManagementService.getTableByNumber(tableNumber);
+        call.enqueue(new Callback<TableDetailData>() {
+            @Override
+            public void onResponse(Call<TableDetailData> call, Response<TableDetailData> response) {
+                if (response.code() == 200) {
+                    TableDetailData tableDetail = new TableDetailData();
+
+                    tableDetail = response.body();
+
+                    tableView.onTableSuccessGetByNumber(tableDetail);
+
+                    List<BillInfo> billInfos = new ArrayList<>();
+                    billInfos = tableDetail.getTableDetail().getListBillInfos();
+
+                    if (billInfos.size() > 0) {
+                        for (BillInfo billInfo : billInfos) {
+                            getByDrinkId(billInfo.getDrinkId(), tableView);
+                        }
+                    }
+                } else {
+                    tableView.onTableFail(Error.TAG_ERROR_RESPONSE + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TableDetailData> call, Throwable t) {
+                tableView.onTableFail(Error.TAG_ERROR_REQUEST + t.getMessage());
+            }
+        });
+    }
+
+    public void getByDrinkId(final int id, final TableView tableView) {
+        Call<DrinkData> callDrinkService = mDrinkService.getById(id);
+        callDrinkService.enqueue(new Callback<DrinkData>() {
+            @Override
+            public void onResponse(Call<DrinkData> call, Response<DrinkData> response) {
+                if (response.code() == 200) {
+                    DrinkData drink = new DrinkData();
+                    drink = response.body();
+                    tableView.onDinkSuccessGetById(drink);
+                } else {
+                    tableView.onTableFail(Error.TAG_ERROR_RESPONSE + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DrinkData> call, Throwable t) {
+                tableView.onTableFail(Error.TAG_ERROR_RESPONSE + t.getMessage());
             }
         });
     }

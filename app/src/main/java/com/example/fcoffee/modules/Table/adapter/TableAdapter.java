@@ -15,12 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fcoffee.R;
 import com.example.fcoffee.modules.Table.activity.TableDetailActivity;
-import com.example.fcoffee.modules.Table.model.DTOresponse.DTOTableList;
+import com.example.fcoffee.modules.Table.model.DTOresponse.TableData;
 
 public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> {
     private Context mContext;
-    private DTOTableList mTables;
-    public TableAdapter(Context mContext, DTOTableList Tables) {
+    private TableData mTables;
+    public TableAdapter(Context mContext, TableData Tables) {
         this.mContext = mContext;
         this.mTables = Tables;
     }
@@ -35,7 +35,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        final int tableNumber = mTables.getTableList().get(position).getTableNumber();
+        final int tableNumber = mTables.getmTables().get(position).getTableNumber();
 
         holder.mTextView.setText("Bàn " + tableNumber);
         holder.mLLButtonTable.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +53,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return mTables != null ? mTables.getTableList().size() : 0;
+        return mTables != null ? mTables.getmTables().size() : 0;
     }
 
     protected class ViewHolder extends RecyclerView.ViewHolder {

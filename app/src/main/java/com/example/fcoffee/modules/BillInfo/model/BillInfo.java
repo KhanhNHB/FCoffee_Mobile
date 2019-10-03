@@ -35,10 +35,12 @@ public class BillInfo implements Serializable {
     @Expose
     private String image;
 
+    private String drinkName;
+
     public BillInfo() {
     }
 
-    public BillInfo(int id, int billInfoId, int billId, int drinkId, int count, float subPrice, String image) {
+    public BillInfo(int id, int billInfoId, int billId, int drinkId, int count, float subPrice, String image, String drinkName) {
         this.id = id;
         this.billInfoId = billInfoId;
         this.billId = billId;
@@ -46,61 +48,42 @@ public class BillInfo implements Serializable {
         this.count = count;
         this.subPrice = subPrice;
         this.image = image;
+        this.drinkName = drinkName;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setDrinkName(String drinkName) {
+        this.drinkName = drinkName;
     }
 
     public int getBillInfoId() {
         return billInfoId;
     }
 
-    public void setBillInfoId(int billInfoId) {
-        this.billInfoId = billInfoId;
-    }
-
     public int getBillId() {
         return billId;
-    }
-
-    public void setBillId(int billId) {
-        this.billId = billId;
     }
 
     public int getDrinkId() {
         return drinkId;
     }
 
-    public void setDrinkId(int drinkId) {
-        this.drinkId = drinkId;
-    }
-
     public int getCount() {
         return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
     }
 
     public float getSubPrice() {
         return subPrice;
     }
 
-    public void setSubPrice(float subPrice) {
-        this.subPrice = subPrice;
-    }
-
     public String getImage() {
         return image;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public String getDrinkName() {
+        return drinkName;
     }
 }

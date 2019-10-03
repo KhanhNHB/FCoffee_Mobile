@@ -12,7 +12,11 @@ public class TablePresenter {
         mTableRepository = new TableRepository();
     }
 
-    public void getAll(TableView tableView) {
-        mTableRepository.getAll(tableView);
+    public void getAll() {
+        mTableRepository.getAll(mTableView);
+    }
+
+    public void getByNumber(int tableNumber) {
+        mTableRepository.getByNumber(tableNumber, mTableView);
     }
 }

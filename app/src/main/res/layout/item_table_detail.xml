@@ -18,16 +18,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dp16"
-                android:padding="@dimen/dp10"
                 android:background="@drawable/custom_frame_input"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/dp10">
 
                 <ImageView
                     android:id="@+id/img_product"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="14.5dp"
                     android:layout_marginLeft="@dimen/dp10"
+                    android:padding="@dimen/dp20"
+                    android:layout_gravity="center"
                     android:src="@mipmap/ic_coffee" />
 
                 <LinearLayout
@@ -42,7 +43,7 @@
                         android:gravity="center"
                         android:text="Cocacola"
                         android:textColor="@color/colorBottomIcon"
-                        android:textSize="@dimen/dp16" />
+                        android:textSize="@dimen/dp23" />
 
                     <TextView
                         android:id="@+id/txt_product_price"
@@ -53,7 +54,7 @@
                         android:gravity="center"
                         android:text="24.000 vnđ"
                         android:textColor="@color/colorGray"
-                        android:textSize="10sp" />
+                        android:textSize="@dimen/dp16" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -61,15 +62,16 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
-                        <Button
-                            android:id="@+id/btn_add_quantity"
-                            android:layout_width="@dimen/dp20"
-                            android:layout_height="@dimen/dp20"
-                            android:background="@drawable/ic_add" />
+                        <ImageView
+                            android:id="@+id/btn_remove_quantity"
+                            android:layout_width="@dimen/dp30"
+                            android:layout_height="@dimen/dp30"
+                            android:background="@color/colorWhite"
+                            android:src="@drawable/ic_remove" />
 
                         <TextView
                             android:id="@+id/txt_product_quantity"
-                            android:layout_width="@dimen/dp70"
+                            android:layout_width="@dimen/dp100"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="@dimen/dp4"
                             android:layout_marginRight="@dimen/dp4"
@@ -77,24 +79,26 @@
                             android:gravity="center"
                             android:text="1"
                             android:textColor="@color/colorBottomIcon"
-                            android:textSize="10sp" />
+                            android:textSize="@dimen/dp20" />
 
-                        <Button
-                            android:id="@+id/btn_remove_quantity"
-                            android:layout_width="@dimen/dp20"
-                            android:layout_height="@dimen/dp20"
-                            android:background="@drawable/ic_remove" />
+                        <ImageView
+                            android:id="@+id/btn_add_quantity"
+                            android:layout_width="@dimen/dp30"
+                            android:layout_height="@dimen/dp30"
+                            android:background="@color/colorWhite"
+                            android:src="@drawable/ic_add" />
+
                     </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/btn_remove_product"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="@dimen/dp8"
+                android:id="@+id/img_btn_remove_product"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30"
                 android:layout_marginLeft="@dimen/dp8"
-                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp8"
                 android:background="@color/colorWhite"
                 android:src="@drawable/ic_remove_product" />
         </FrameLayout>
