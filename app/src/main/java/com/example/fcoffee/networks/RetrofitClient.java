@@ -1,5 +1,7 @@
 package com.example.fcoffee.networks;
 
+import com.example.fcoffee.modules.Account.repositories.LoginRepository;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -22,9 +24,10 @@ public class RetrofitClient {
 
                 Request.Builder newRequest = request.newBuilder().header(
                         "Authorization",
-                        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJraGFuaG5oYiIsIkpXVEF1dGhvcml0aWVzS2V5IjoiQWRtaW4iLCJleHAiOjE1NzAxNzQxMjJ9.n0IpWfS00PjZxwip0SuvqA5wBc3Bpn-dnKzJhkWw37pwTs1Svsfuc_kSjiYry1-fhtzKq8nB3TVAXzPsc3xp_w"
+                        LoginRepository.TOKEN
                 );
 
+                System.out.println(LoginRepository.TOKEN);
                 return chain.proceed(newRequest.build());
 
             }

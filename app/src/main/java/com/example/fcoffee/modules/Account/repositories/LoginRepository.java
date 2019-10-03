@@ -18,7 +18,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginRepository {
+
     AccountService service;
+
+    public static String TOKEN = "";
 
     public LoginRepository() {
         service = APIUtils.getAccountService();
@@ -44,6 +47,7 @@ public class LoginRepository {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() == 200) {
                     try {
+                        TOKEN = response.body().string();
                         loginView.onLoginSuccess();
                     } catch (Exception e) {
                         loginView.onLoginFail("Login Fail");
