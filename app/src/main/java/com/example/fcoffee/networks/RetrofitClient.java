@@ -26,8 +26,6 @@ public class RetrofitClient {
                         "Authorization",
                         LoginRepository.TOKEN
                 );
-
-                System.out.println(LoginRepository.TOKEN);
                 return chain.proceed(newRequest.build());
 
             }

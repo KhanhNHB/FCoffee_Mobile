@@ -4,47 +4,47 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Bill implements Serializable {
-    private int billId;
-    private int table_number;
-    private int paided;
+    private int id;
+    private int tableNumber;
+    private boolean paided;
     private float discount;
     private float totalPrice;
-    private String usernameStaff;
-    private Date createdAr;
+    private String usernameSatff;
+    private Date createAt;
 
     public Bill() {}
 
-    public Bill(int billId, int table_number, int paided, float discount, float totalPrice, String usernameStaff, Date createdAr) {
-        this.billId = billId;
-        this.table_number = table_number;
+    public Bill(int id, int tableNumber, boolean paided, float discount, float totalPrice, String usernameSatff, Date createAt) {
+        this.id = id;
+        this.tableNumber = tableNumber;
         this.paided = paided;
         this.discount = discount;
         this.totalPrice = totalPrice;
-        this.usernameStaff = usernameStaff;
-        this.createdAr = createdAr;
+        this.usernameSatff = usernameSatff;
+        this.createAt = createAt;
     }
 
-    public int getBillId() {
-        return billId;
+    public int getId() {
+        return id;
     }
 
-    public void setBillId(int billId) {
-        this.billId = billId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getTable_number() {
-        return table_number;
+    public int getTableNumber() {
+        return tableNumber;
     }
 
-    public void setTable_number(int table_number) {
-        this.table_number = table_number;
+    public void setTableNumber(int tableNumber) {
+        this.tableNumber = tableNumber;
     }
 
-    public int getPaided() {
+    public boolean isPaided() {
         return paided;
     }
 
-    public void setPaided(int paided) {
+    public void setPaided(boolean paided) {
         this.paided = paided;
     }
 
@@ -64,19 +64,19 @@ public class Bill implements Serializable {
         this.totalPrice = totalPrice;
     }
 
-    public String getUsernameStaff() {
-        return usernameStaff;
+    public String getUsernameSatff() {
+        return usernameSatff;
     }
 
-    public void setUsernameStaff(String usernameStaff) {
-        this.usernameStaff = usernameStaff;
+    public void setUsernameSatff(String usernameSatff) {
+        this.usernameSatff = usernameSatff;
     }
 
-    public Date getCreatedAr() {
-        return createdAr;
+    public Date getCreateAt() {
+        return createAt;
     }
 
-    public void setCreatedAr(Date createdAr) {
-        this.createdAr = createdAr;
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
     }
 }
