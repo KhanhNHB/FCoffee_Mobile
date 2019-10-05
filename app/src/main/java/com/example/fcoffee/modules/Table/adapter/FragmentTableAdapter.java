@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.example.fcoffee.modules.Statistics.activity.StatisticsFragment;
+import com.example.fcoffee.modules.Bill.activity.StatisticsFragment;
 import com.example.fcoffee.modules.Table.activity.TableFragment;
 import com.example.fcoffee.modules.Account.activities.AccountFragment;
 import com.example.fcoffee.modules.Account.activities.LogoutFragment;
