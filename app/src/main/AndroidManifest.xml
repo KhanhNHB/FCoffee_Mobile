@@ -22,6 +22,7 @@
         </activity>
         <activity android:name=".modules.Table.activity.TableDetailActivity">
         </activity>
+        <activity android:name=".modules.Drink.activity.DrinkActivity"></activity>
     </application>
 
 

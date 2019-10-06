@@ -19,12 +19,6 @@ import com.example.fcoffee.modules.Account.services.AccountService;
 public class AccountFragment extends Fragment {
 
     private View mView;
-    private TextView mTxtFullname, mTxtRole;
-    private EditText mAccount, mPassword;
-    private Button mBtnUpdate;
-
-    private AccountService service;
-    private Account account;
 
     public static AccountFragment newInstance() {
         AccountFragment fragment = new AccountFragment();
@@ -36,21 +30,6 @@ public class AccountFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        initView();
-        initData();
-    }
-
-    private void initView() {
-//        mTxtFullname = mView.findViewById(R.id.txt_fullname);
-//        mTxtRole = mView.findViewById(R.id.txt_role);
-//        mAccount = mView.findViewById(R.id.txt_account);
-//        mPassword = mView.findViewById(R.id.txt_password);
-//        mBtnUpdate = mView.findViewById(R.id.btn_update_account);
-//        service = APIUtils.getAccountService();
-    }
-
-    private void initData() {
 
     }
 

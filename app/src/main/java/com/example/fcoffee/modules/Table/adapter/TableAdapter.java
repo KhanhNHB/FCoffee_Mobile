@@ -2,6 +2,7 @@ package com.example.fcoffee.modules.Table.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,8 +37,15 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final int tableNumber = mTables.getmTables().get(position).getTableNumber();
+        final boolean status = mTables.getmTables().get(position).isStatus();
 
         holder.mTextView.setText("Bàn " + tableNumber);
+
+        if (status) {
+            holder.mLLButtonTable.setBackgroundResource(R.drawable.button_background);
+            holder.mTextView.setTextColor(Color.parseColor("#FFFFFF"));
+        }
+
         holder.mLLButtonTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ManagementService {
@@ -21,8 +22,8 @@ public interface ManagementService {
     @POST("/api/manager/addDrinkForTable")
     Call<ResponseBody> create(@Body RequestBody model);
 
-//    @PUT("/manager/addCount/{billInfoId}")
-//    Call<> update(@Body Account account);
+    @PUT("api/manager/addCount/{billInfo}")
+    Call<ResponseBody> update(@Path("billInfo") int billInfo);
 
 //    @DELETE("/manager/removeDrink{billInfoId}")
 //    Call<> delete(@Path(@Path(billInfoId) int BillInfoId);

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Drink implements Serializable {
+public class DTODrink implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -35,10 +35,10 @@ public class Drink implements Serializable {
     @Expose
     private String image;
 
-    public Drink() {}
+    public DTODrink() {}
 
 
-    public Drink(int id, String name, float price, boolean disable, String description, int categoryId, String image) {
+    public DTODrink(int id, String name, float price, boolean disable, String description, int categoryId, String image) {
         this.id = id;
         this.name = name;
         this.price = price;

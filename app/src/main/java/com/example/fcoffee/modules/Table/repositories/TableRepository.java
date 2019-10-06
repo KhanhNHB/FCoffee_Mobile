@@ -2,11 +2,9 @@ package com.example.fcoffee.modules.Table.repositories;
 
 import com.example.fcoffee.common.Error;
 import com.example.fcoffee.modules.BillInfo.model.BillInfo;
-import com.example.fcoffee.modules.Drink.model.DTOrequest.Drink;
+import com.example.fcoffee.modules.Drink.model.DTOresponse.DrinkDTO;
 import com.example.fcoffee.modules.Drink.model.DTOresponse.DrinkData;
-import com.example.fcoffee.modules.Drink.repositories.DrinkRepository;
 import com.example.fcoffee.modules.Drink.services.DrinkService;
-import com.example.fcoffee.modules.Drink.view.DrinkView;
 import com.example.fcoffee.modules.Management.services.ManagementService;
 import com.example.fcoffee.modules.Table.model.DTOresponse.TableDetailData;
 import com.example.fcoffee.modules.Table.model.DTOresponse.TableData;
@@ -74,7 +72,7 @@ public class TableRepository {
                         }
                     }
                 } else {
-                    tableView.onTableFail(Error.TAG_ERROR_RESPONSE + response.message());
+                    tableView.onTableFail("Bàn trống");
                 }
             }
 
@@ -86,12 +84,12 @@ public class TableRepository {
     }
 
     public void getByDrinkId(final int id, final TableView tableView) {
-        Call<DrinkData> callDrinkService = mDrinkService.getById(id);
-        callDrinkService.enqueue(new Callback<DrinkData>() {
+        Call<DrinkDTO> callDrinkService = mDrinkService.getById(id);
+        callDrinkService.enqueue(new Callback<DrinkDTO>() {
             @Override
-            public void onResponse(Call<DrinkData> call, Response<DrinkData> response) {
+            public void onResponse(Call<DrinkDTO> call, Response<DrinkDTO> response) {
                 if (response.code() == 200) {
-                    DrinkData drink = new DrinkData();
+                    DrinkDTO drink = new DrinkDTO();
                     drink = response.body();
                     tableView.onDinkSuccessGetById(drink);
                 } else {
@@ -100,7 +98,7 @@ public class TableRepository {
             }
 
             @Override
-            public void onFailure(Call<DrinkData> call, Throwable t) {
+            public void onFailure(Call<DrinkDTO> call, Throwable t) {
                 tableView.onTableFail(Error.TAG_ERROR_RESPONSE + t.getMessage());
             }
         });

@@ -1,7 +1,10 @@
 package com.example.fcoffee.modules.Drink.view;
 
+import com.example.fcoffee.modules.Drink.model.DTOresponse.DrinkDTO;
 import com.example.fcoffee.modules.Drink.model.DTOresponse.DrinkData;
 
 public interface DrinkView {
-    void onDinkSuccessGetById(DrinkData drink);
+    void onDinkSuccessGetById(DrinkDTO drinkDTO);
+    void onDrinkSuccessGetAll(DrinkData drinks);
+    void onDrinkFail(String message);
 }

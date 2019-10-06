@@ -4,21 +4,19 @@ import com.example.fcoffee.modules.Drink.model.DTOrequest.DTODrink;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
-public class DrinkData {
+public class DrinkDTO {
 
     @SerializedName("data")
     @Expose
-    private List<DTODrink> mDrink;
+    private DTODrink mDrink;
 
-    public DrinkData() {}
+   public DrinkDTO() {}
 
-    public DrinkData(List<DTODrink> mDrink) {
+    public DrinkDTO(DTODrink mDrink) {
         this.mDrink = mDrink;
     }
 
-    public List<DTODrink> getmDrink() {
+    public DTODrink getmDrink() {
         return mDrink;
     }
 }

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.fcoffee.R;
+import com.example.fcoffee.modules.Drink.model.DTOresponse.DrinkDTO;
 import com.example.fcoffee.modules.Drink.model.DTOresponse.DrinkData;
 import com.example.fcoffee.modules.Table.adapter.TableAdapter;
 import com.example.fcoffee.modules.Table.model.DTOresponse.TableDetailData;
@@ -74,7 +75,7 @@ public class TableFragment extends Fragment implements TableView {
     }
 
     @Override
-    public void onDinkSuccessGetById(DrinkData drink) {
+    public void onDinkSuccessGetById(DrinkDTO drink) {
 
     }
 
