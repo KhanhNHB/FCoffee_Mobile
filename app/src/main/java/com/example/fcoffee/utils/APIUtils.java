@@ -1,6 +1,7 @@
 package com.example.fcoffee.utils;
 
 import com.example.fcoffee.modules.Bill.service.BillService;
+import com.example.fcoffee.modules.BillInfo.service.BillInfoService;
 import com.example.fcoffee.modules.Table.services.TableService;
 import com.example.fcoffee.networks.RetrofitClient;
 import com.example.fcoffee.modules.Account.services.AccountService;
@@ -17,6 +18,10 @@ public class APIUtils {
 
     public static BillService getBillService(){
         return RetrofitClient.getClient(API_URL_BASE).create(BillService.class);
+    }
+
+    public static BillInfoService getBillInfoService(){
+        return RetrofitClient.getClient(API_URL_BASE).create(BillInfoService.class);
     }
 
     public static AccountService getAccountService() {

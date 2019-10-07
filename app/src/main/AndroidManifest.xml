@@ -11,18 +11,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".modules.BillInfo.activity.BillInfoActivity"></activity>
         <activity android:name=".modules.Account.activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".modules.Table.activity.TableActivity">
-        </activity>
-        <activity android:name=".modules.Table.activity.TableDetailActivity">
-
-        </activity>
+        <activity android:name=".modules.Table.activity.TableActivity"></activity>
+        <activity android:name=".modules.Table.activity.TableDetailActivity"></activity>
     </application>
-
 
 </manifest>

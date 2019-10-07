@@ -7,4 +7,7 @@
     <string name="title_ll_button_store">Cửa hàng</string>
     <string name="title_ll_button_accumulated_points">Điểm tích lũy</string>
     <string name="title_ll_button_location">Địa điểm</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

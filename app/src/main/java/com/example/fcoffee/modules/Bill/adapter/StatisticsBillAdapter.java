@@ -1,14 +1,18 @@
 package com.example.fcoffee.modules.Bill.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.fcoffee.R;
 import com.example.fcoffee.common.Error;
 import com.example.fcoffee.modules.Bill.model.DTOresponse.DTOBillList;
+import com.example.fcoffee.modules.BillInfo.activity.BillInfoActivity;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,19 +45,37 @@ public class StatisticsBillAdapter extends RecyclerView.Adapter<StatisticsBillAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        int tableNumber = mBill.getBillList().get(position).getTableNumber();
-        float tableDiscount = mBill.getBillList().get(position).getDiscount();
-        float price = mBill.getBillList().get(position).getTotalPrice();
-        Date date = mBill.getBillList().get(position).getCreateAt();
-        String dateString = sdf.format(date);
-        String priceString = nf.format(price);
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+        final int billId = mBill.getBillList().get(position).getId();
+        final int tableNumber = mBill.getBillList().get(position).getTableNumber();
+        final float tableDiscount = mBill.getBillList().get(position).getDiscount();
+        final float price = mBill.getBillList().get(position).getTotalPrice();
+        final Date date = mBill.getBillList().get(position).getCreateAt();
+        final String dateString = sdf.format(date);
+        final String priceString = nf.format(price);
 
         holder.mTextViewCount.setText(String.valueOf(position + 1));
         holder.mTextViewTableNumber.setText(String.valueOf(tableNumber));
         holder.mTextViewDiscount.setText(String.valueOf(tableDiscount) + "%");
         holder.mTextViewPrice.setText(priceString);
         holder.mTextViewTime.setText(dateString);
+        holder.mLLButtonBill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, BillInfoActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("bill_id", billId);
+                bundle.putString("table_number", String.valueOf(tableNumber));
+                bundle.putString("price", priceString);
+                bundle.putString("discount", String.valueOf(tableDiscount) + "%");
+                bundle.putString("usernameStaff", String.valueOf(mBill.getBillList().get(position).getUsernameSatff()));
+                bundle.putString("date", dateString);
+
+                intent.putExtra("anonymouse_number", bundle);
+
+                mContext.startActivity(intent);
+            }
+        });
 
     }
 
@@ -68,6 +90,7 @@ public class StatisticsBillAdapter extends RecyclerView.Adapter<StatisticsBillAd
         private TextView mTextViewDiscount;
         private TextView mTextViewPrice;
         private TextView mTextViewTime;
+        private LinearLayout mLLButtonBill;
 
         public ViewHolder(@NonNull View view){
             super(view);
@@ -76,6 +99,7 @@ public class StatisticsBillAdapter extends RecyclerView.Adapter<StatisticsBillAd
             mTextViewDiscount = view.findViewById(R.id.edtDiscount);
             mTextViewPrice = view.findViewById(R.id.edtPrice);
             mTextViewTime = view.findViewById(R.id.edtTime);
+            mLLButtonBill = view.findViewById(R.id.ll_button_bill);
         }
     }
 }
