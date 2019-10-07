@@ -57,7 +57,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="@dimen/dp20"
-            android:layout_weight="1.5"
+            android:layout_weight="1.75"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -71,7 +71,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="@dimen/dp20"
-            android:layout_weight="2.5"
+            android:layout_weight="2.25"
             android:background="#DCDCDC"
             android:gravity="center"
             android:orientation="horizontal">

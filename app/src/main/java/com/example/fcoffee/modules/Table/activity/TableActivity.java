@@ -141,6 +141,7 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
 
         mImgLogout.setImageResource(R.mipmap.ic_logout_selected);
         mTxtLogout.setTextColor(Color.parseColor("#FFFFFF"));
+        logout();
     }
 
     private void logout() {
