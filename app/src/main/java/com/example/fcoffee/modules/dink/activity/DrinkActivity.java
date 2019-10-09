@@ -33,6 +33,7 @@ public class DrinkActivity extends AppCompatActivity implements DrinkView {
     private ImageView btn_back;
     private Button btn_check_in;
     private int tableNumber;
+    private boolean flag = false;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +80,8 @@ public class DrinkActivity extends AppCompatActivity implements DrinkView {
 
     @Override
     public void onDrinkSuccessCheckIn() {
-        Toast.makeText(this, "Thêm sản phẩm thành công", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Thêm sản phẩm thành công", Toast.LENGTH_LONG).show();
+        finish();
     }
 
     @Override
@@ -124,8 +126,5 @@ public class DrinkActivity extends AppCompatActivity implements DrinkView {
         requestBodyDrink.setListDrink(listDrink);
         requestBodyDrink.setTableNumber(tableNumber);
         mDrinkPresenter.AddDrinkForTable(requestBodyDrink);
-
-        setResult(Activity.RESULT_CANCELED, intent);
-        finish();
     }
 }
