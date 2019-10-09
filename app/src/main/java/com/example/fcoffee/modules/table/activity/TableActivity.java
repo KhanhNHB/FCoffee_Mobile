@@ -17,7 +17,6 @@ import com.example.fcoffee.R;
 import com.example.fcoffee.modules.account.repositories.LoginRepository;
 import com.example.fcoffee.modules.table.adapter.FragmentTableAdapter;
 
-
 public class TableActivity extends AppCompatActivity implements View.OnClickListener {
     private FragmentTableAdapter mFragmentTableAdapter;
     private ViewPager mViewPager;
@@ -170,5 +169,4 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
-
 }

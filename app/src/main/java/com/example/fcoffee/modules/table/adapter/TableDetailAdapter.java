@@ -31,6 +31,13 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
         mTableDetailData = tableDetail;
     }
 
+    public void updateTableDetailData(TableDetailData data){
+        mTableDetailData = new TableDetailData();
+        mTableDetailData = data;
+
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

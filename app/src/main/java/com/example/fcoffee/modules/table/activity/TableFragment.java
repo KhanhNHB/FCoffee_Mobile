@@ -47,6 +47,13 @@ public class TableFragment extends Fragment implements TableView {
         return mView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initView();
+        initData();
+    }
+
     private void initView() {
         mRecyclerView = mView.findViewById(R.id.rcv_table);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
@@ -81,7 +88,7 @@ public class TableFragment extends Fragment implements TableView {
             mTableAdapter = new TableAdapter(getContext(), mTables);
             mRecyclerView.setAdapter(mTableAdapter);
         } else {
-            mTableAdapter.notifyDataSetChanged();
+            mTableAdapter.updateTableDetailData(mTables);
         }
     }
 }

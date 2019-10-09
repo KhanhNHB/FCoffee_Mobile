@@ -22,9 +22,17 @@ import com.example.fcoffee.modules.table.model.DTOresponse.TableData;
 public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> {
     private Context mContext;
     private TableData mTables;
+
     public TableAdapter(Context mContext, TableData Tables) {
         this.mContext = mContext;
         this.mTables = Tables;
+    }
+
+    public void updateTableDetailData(TableData tables){
+        mTables = new TableData();
+        mTables = tables;
+
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -61,6 +69,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
             }
         });
     }
+
 
     @Override
     public int getItemCount() {

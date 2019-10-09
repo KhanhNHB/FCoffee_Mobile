@@ -23,8 +23,10 @@ import com.example.fcoffee.modules.table.model.DTOresponse.TableData;
 import com.example.fcoffee.modules.table.presenter.TablePresenter;
 import com.example.fcoffee.modules.table.view.TableView;
 
-public class TableDetailActivity extends AppCompatActivity implements TableView, ManagementView {
+import java.util.List;
 
+public class TableDetailActivity extends AppCompatActivity implements TableView, ManagementView {
+    private static final int DRINK = 1998;
     private RecyclerView mRecyclerView;
     private TableDetailData mTableDetail;
     private TableDetailAdapter mTableDetailAdapter;
@@ -41,7 +43,6 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_detail);
-
         initView();
         initData();
     }
@@ -66,12 +67,13 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
         mManagementPresenter = new ManagementPresenter(this);
 
         mTablePresenter.getByNumber(tableNumber);
+
         txt_table_name.setText("Bàn " + tableNumber);
         btn_back.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                finish();
             }
         });
 
@@ -82,7 +84,7 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
                 Bundle bundle = new Bundle();
                 bundle.putInt("number", tableNumber);
                 intent.putExtra("table_number", bundle);
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, DRINK);
             }
         });
     }
@@ -96,7 +98,7 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
     public void onTableSuccessGetByNumber(TableDetailData tableDetail) {
         if (tableDetail != null) {
             mTableDetail = tableDetail;
-            updateRcv();
+            updateRcv(mTableDetail);
         }
     }
 
@@ -105,12 +107,12 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void updateRcv() {
+    private void updateRcv(TableDetailData data) {
         if (mTableDetailAdapter == null) {
-            mTableDetailAdapter = new TableDetailAdapter(this, mTableDetail);
+            mTableDetailAdapter = new TableDetailAdapter(this, data);
             mRecyclerView.setAdapter(mTableDetailAdapter);
         } else {
-            mTableDetailAdapter.notifyDataSetChanged();
+            mTableDetailAdapter.updateTableDetailData(data);
         }
     }
 
@@ -122,13 +124,13 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
             mManagementPresenter.payment(billId);
             Intent returnIntent = new Intent();
             setResult(Activity.RESULT_CANCELED, returnIntent);
-            finish();
         }
     }
 
     @Override
     public void onDrinkSuccess() {
         Toast.makeText(this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
@@ -139,36 +141,13 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        System.out.println("VAOOOOooooooooooooooooooooooooo");
-
-        if (requestCode == 1) {
-            if (requestCode == Activity.RESULT_OK) {
-                System.out.println("VAOOOOooooooooooooooooooooooooo RESULT OK");
-            }
-
-            if (requestCode == Activity.RESULT_CANCELED) {
-                System.out.println("VAOOOOooooooooooooooooooooooooo RESULT CANCELED");
-            }
-        }
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        System.out.println("on restart");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        System.out.println("on start");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        initView();
+        initData();
     }
 
 }
