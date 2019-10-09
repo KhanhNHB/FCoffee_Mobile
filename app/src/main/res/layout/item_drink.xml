@@ -10,10 +10,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -26,9 +22,9 @@
                     android:id="@+id/img_product"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dp10"
                     android:padding="@dimen/dp20"
+                    android:layout_gravity="center"
                     android:src="@mipmap/ic_coffee" />
 
                 <LinearLayout
@@ -41,7 +37,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="tên sản phẩm"
+                        android:text="Cocacola"
                         android:textColor="@color/colorBottomIcon"
                         android:textSize="@dimen/dp23" />
 
@@ -93,16 +89,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/img_btn_remove_product"
-                android:layout_width="@dimen/dp30"
-                android:layout_height="@dimen/dp30"
-                android:layout_marginLeft="@dimen/dp8"
-                android:layout_marginTop="@dimen/dp8"
-                android:background="@color/colorWhite"
-                android:src="@drawable/ic_remove_product" />
-        </FrameLayout>
-
     </LinearLayout>
+
 </LinearLayout>

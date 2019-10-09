@@ -1,9 +1,8 @@
 package com.example.fcoffee.modules.Account.repositories;
 
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.fcoffee.common.Error;
+import com.example.fcoffee.modules.Drink.adapter.common.Error;
 import com.example.fcoffee.modules.Account.models.Account;
 import com.example.fcoffee.modules.Account.services.AccountService;
 import com.example.fcoffee.modules.Account.views.LoginView;
@@ -28,10 +27,10 @@ public class LoginRepository {
     }
 
     public void checkLogin(Account account, final LoginView loginView) {
-        JSONObject custommer = new JSONObject();
+        JSONObject customer = new JSONObject();
         try {
-            custommer.put("username", account.getUsername());
-            custommer.put("password", account.getPassword());
+            customer.put("username", account.getUsername());
+            customer.put("password", account.getPassword());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -40,7 +39,7 @@ public class LoginRepository {
             return;
         }
 
-        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), custommer.toString());
+        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), customer.toString());
         Call<ResponseBody> call = service.checkLogin(body);
         call.enqueue(new Callback<ResponseBody>() {
             @Override

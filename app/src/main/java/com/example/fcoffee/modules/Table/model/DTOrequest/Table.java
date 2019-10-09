@@ -1,4 +1,4 @@
-package com.example.fcoffee.modules.Table.model;
+package com.example.fcoffee.modules.Table.model.DTOrequest;
 
 import com.google.gson.annotations.SerializedName;
 

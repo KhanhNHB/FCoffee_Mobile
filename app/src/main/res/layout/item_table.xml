@@ -27,7 +27,8 @@
             android:gravity="center"
             android:text="Bàn 1"
             android:textColor="@color/colorBottomIcon"
-            android:textSize="10sp" />
+            android:padding="@dimen/dp4"
+            android:textSize="@dimen/dp16" />
     </LinearLayout>
 
 </LinearLayout>
