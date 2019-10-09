@@ -1,12 +1,12 @@
 package com.example.fcoffee.utils;
 
-import com.example.fcoffee.modules.Drink.services.DrinkService;
-import com.example.fcoffee.modules.Bill.service.BillService;
-import com.example.fcoffee.modules.BillInfo.service.BillInfoService;
-import com.example.fcoffee.modules.Table.services.TableService;
+import com.example.fcoffee.modules.dink.services.DrinkService;
+import com.example.fcoffee.modules.bill.service.BillService;
+import com.example.fcoffee.modules.billInfo.service.BillInfoService;
+import com.example.fcoffee.modules.table.services.TableService;
 import com.example.fcoffee.networks.RetrofitClient;
-import com.example.fcoffee.modules.Account.services.AccountService;
-import com.example.fcoffee.modules.Management.services.ManagementService;
+import com.example.fcoffee.modules.account.services.AccountService;
+import com.example.fcoffee.modules.management.services.ManagementService;
 
 public class APIUtils {
     private APIUtils() {}
