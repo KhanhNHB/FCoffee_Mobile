@@ -35,10 +35,12 @@ public class DTODrink implements Serializable {
     @Expose
     private String image;
 
+    private int count = 0;
+
     public DTODrink() {}
 
 
-    public DTODrink(int id, String name, float price, boolean disable, String description, int categoryId, String image) {
+    public DTODrink(int id, String name, float price, boolean disable, String description, int categoryId, String image, int count) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -46,6 +48,15 @@ public class DTODrink implements Serializable {
         this.description = description;
         this.categoryId = categoryId;
         this.image = image;
+        this.count = count;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public int getId() {

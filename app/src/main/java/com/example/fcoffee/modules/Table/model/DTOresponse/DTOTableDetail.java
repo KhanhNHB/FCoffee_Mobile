@@ -1,6 +1,7 @@
 package com.example.fcoffee.modules.Table.model.DTOresponse;
 
 import com.example.fcoffee.modules.BillInfo.model.BillInfo;
+import com.example.fcoffee.modules.Drink.model.DTOresponse.DrinkDTO;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -44,6 +45,7 @@ public class DTOTableDetail implements Serializable {
     @SerializedName("listBillInfos")
     @Expose
     private List<BillInfo> listBillInfos;
+
 
     public DTOTableDetail() {}
 

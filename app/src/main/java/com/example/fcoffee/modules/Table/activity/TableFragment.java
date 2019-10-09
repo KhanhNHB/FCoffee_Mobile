@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.fcoffee.R;
-import com.example.fcoffee.modules.Drink.model.DTOresponse.DrinkDTO;
-import com.example.fcoffee.modules.Drink.model.DTOresponse.DrinkData;
 import com.example.fcoffee.modules.Table.adapter.TableAdapter;
 import com.example.fcoffee.modules.Table.model.DTOresponse.TableDetailData;
 import com.example.fcoffee.modules.Table.model.DTOresponse.TableData;
@@ -27,7 +25,6 @@ public class TableFragment extends Fragment implements TableView {
     private TableAdapter mTableAdapter;
     private TableData mTables;
     private TablePresenter mTablePresenter;
-    private DrinkData drink;
 
     public static TableFragment newInstance() {
         TableFragment fragment = new TableFragment();
@@ -72,11 +69,6 @@ public class TableFragment extends Fragment implements TableView {
     @Override
     public void onTableSuccessGetByNumber(TableDetailData tableDetail) {
         // TODO- TableDetailActivity
-    }
-
-    @Override
-    public void onDinkSuccessGetById(DrinkDTO drink) {
-
     }
 
     @Override

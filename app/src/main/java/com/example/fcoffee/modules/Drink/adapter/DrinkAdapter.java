@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fcoffee.R;
-import com.example.fcoffee.common.Money;
+import com.example.fcoffee.modules.Drink.adapter.common.Money;
 import com.example.fcoffee.modules.Drink.model.DTOresponse.DrinkData;
 
 import java.text.DecimalFormat;
@@ -39,32 +39,36 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         initData(holder, position);
 
-        final String currentPrice = holder.mTxtProductPrice.getText().toString();
-
         holder.mBtnAddQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String currentQuantity = holder.mTxtProductQuantity.getText().toString();
-                int parseQuantity = Integer.parseInt(currentQuantity);
+                String currentPrice = String.valueOf(mDrinks.getmDrink().get(position).getPrice());
+                int currentQuantity = Integer.parseInt(holder.mTxtProductQuantity.getText().toString());
 
-                parseQuantity = parseQuantity + 1;
-                holder.mTxtProductQuantity.setText(String.valueOf(parseQuantity));
-                setCurrentPrice(holder, currentPrice, parseQuantity);
+                currentQuantity = currentQuantity + 1;
+
+                if (currentQuantity == 1) {
+                    setCurrentPrice(holder, currentPrice, 1);
+                } else {
+                    setCurrentPrice(holder, currentPrice, currentQuantity);
+                }
+
+                mDrinks.getmDrink().get(position).setCount(currentQuantity);
             }
         });
 
         holder.mBtnRemoveQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String currentQuantity = holder.mTxtProductQuantity.getText().toString();
+                String currentPrice = String.valueOf(mDrinks.getmDrink().get(position).getPrice());
+                int currentQuantity = Integer.parseInt(holder.mTxtProductQuantity.getText().toString());
 
-                int parseQuantity = Integer.parseInt(currentQuantity);
-
-                if (parseQuantity > 1) {
-                    parseQuantity = parseQuantity - 1;
-                    holder.mTxtProductQuantity.setText(String.valueOf(parseQuantity));
-                    setCurrentPrice(holder, currentPrice, parseQuantity);
+                if (currentQuantity > 0) {
+                    currentQuantity = currentQuantity - 1;
+                    setCurrentPrice(holder, currentPrice, currentQuantity);
                 }
+
+                mDrinks.getmDrink().get(position).setCount(currentQuantity);
             }
         });
     }
@@ -76,6 +80,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.ViewHolder> 
         NumberFormat formater = new DecimalFormat("#,###");
         String formatterPrice = formater.format(Float.parseFloat(price) * currentQuantity) + Money.VND;
 
+        holder.mTxtProductQuantity.setText(String.valueOf(currentQuantity));
         holder.mTxtProductPrice.setText(formatterPrice);
     }
 
@@ -83,7 +88,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.ViewHolder> 
 //        holder.mImgProduct = mTableDetailData.getTableDetail().getListBillInfos().get(position).getImage();
 
         holder.mTxtProductName.setText(mDrinks.getmDrink().get(position).getName());
-        holder.mTxtProductPrice.setText(String.valueOf(mDrinks.getmDrink().get(position).getPrice() + Money.VND));
+        holder.mTxtProductPrice.setText("0" + Money.VND);
         holder.mTxtProductQuantity.setText("0");
     }
 
@@ -98,6 +103,10 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.ViewHolder> 
 
         public ViewHolder(@NonNull View view) {
             super(view);
+            initView(view);
+        }
+
+        private void initView(View view) {
             mImgProduct = view.findViewById(R.id.img_product);
             mTxtProductName = view.findViewById(R.id.txt_product_name);
             mTxtProductPrice = view.findViewById(R.id.txt_product_price);

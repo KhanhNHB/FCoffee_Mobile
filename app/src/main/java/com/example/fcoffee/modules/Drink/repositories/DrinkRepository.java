@@ -1,22 +1,26 @@
 package com.example.fcoffee.modules.Drink.repositories;
 
+import com.example.fcoffee.modules.Drink.adapter.common.Error;
+import com.example.fcoffee.modules.Drink.model.DTOrequest.RequestBodyDrink;
 import com.example.fcoffee.modules.Drink.model.DTOresponse.DrinkDTO;
 import com.example.fcoffee.modules.Drink.model.DTOresponse.DrinkData;
 import com.example.fcoffee.modules.Drink.services.DrinkService;
 import com.example.fcoffee.modules.Drink.view.DrinkView;
+import com.example.fcoffee.modules.Management.services.ManagementService;
 import com.example.fcoffee.utils.APIUtils;
 
-import java.util.List;
-
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DrinkRepository {
     DrinkService mDrinkService;
+    ManagementService mManagementService;
 
     public DrinkRepository() {
         mDrinkService = APIUtils.getDrinkService();
+        mManagementService = APIUtils.getManagerService();
     }
 
     public void getById(final int id, final DrinkView drinkView) {
@@ -59,5 +63,29 @@ public class DrinkRepository {
                 drinkView.onDrinkFail(t.getMessage());
             }
         });
+    }
+
+    public void AddDrinkForTable(RequestBodyDrink requestBodyDrinks, final DrinkView drinkView) {
+
+        try {
+            Call<ResponseBody> call = mManagementService.addDrinkForTable(requestBodyDrinks);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.code() == 200) {
+                        drinkView.onDrinkSuccessCheckIn();
+                    } else {
+                        drinkView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    drinkView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

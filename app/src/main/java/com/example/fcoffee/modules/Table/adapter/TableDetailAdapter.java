@@ -1,33 +1,34 @@
 package com.example.fcoffee.modules.Table.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fcoffee.R;
-import com.example.fcoffee.common.Money;
-import com.example.fcoffee.modules.Drink.model.DTOresponse.DrinkDTO;
+import com.example.fcoffee.modules.Drink.adapter.common.Money;
+import com.example.fcoffee.modules.Account.repositories.LoginRepository;
 import com.example.fcoffee.modules.Table.model.DTOresponse.TableDetailData;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.StringTokenizer;
 
-public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.ViewHolder> implements  {
+public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.ViewHolder> {
     private Context mContext;
-    private DrinkDTO mDrink;
     private TableDetailData mTableDetailData;
 
-    public TableDetailAdapter(Context context, TableDetailData tableDetail, DrinkDTO drinkDTO) {
+    public TableDetailAdapter(Context context, TableDetailData tableDetail) {
         mContext = context;
         mTableDetailData = tableDetail;
-        mDrink = drinkDTO;
     }
 
     @NonNull
@@ -43,12 +44,13 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
 
         initData(holder, position);
 
-        final String currentPrice = holder.mTxtProductPrice.getText().toString();
+        final int count = mTableDetailData.getTableDetail().getListBillInfos().get(position).getCount();
+        final String currentPrice = String.valueOf(mTableDetailData.getTableDetail().getListBillInfos().get(position).getSubPrice() / count);
 
         holder.mImgBtnRemoveProduct.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
+            public void onClick(View v) {
+                verifyRemoveItem(holder.mTxtProductName.getText().toString(), position);
             }
         });
 
@@ -59,8 +61,8 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
                 int parseQuantity = Integer.parseInt(currentQuantity);
 
                 parseQuantity = parseQuantity + 1;
-                holder.mTxtProductQuantity.setText(String.valueOf(parseQuantity));
                 setCurrentPrice(holder, currentPrice, parseQuantity);
+
             }
         });
 
@@ -73,7 +75,7 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
 
                 if (parseQuantity > 1) {
                     parseQuantity = parseQuantity - 1;
-                    holder.mTxtProductQuantity.setText(String.valueOf(parseQuantity));
+
                     setCurrentPrice(holder, currentPrice, parseQuantity);
                 }
             }
@@ -84,19 +86,16 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
         StringTokenizer stk = new StringTokenizer(currentPrice);
         String price = stk.nextToken(" ");
 
-        NumberFormat formater = new DecimalFormat("#,###");
-        String formatterPrice = formater.format(Float.parseFloat(price) * currentQuantity) + Money.VND;
+        NumberFormat format = new DecimalFormat("#,###");
+        String formatterPrice = format.format(Float.parseFloat(price) * currentQuantity) + Money.VND;
 
+        holder.mTxtProductQuantity.setText(String.valueOf(currentQuantity));
         holder.mTxtProductPrice.setText(formatterPrice);
     }
 
     private void initData(ViewHolder holder, int position) {
 //        holder.mImgProduct = mTableDetailData.getTableDetail().getListBillInfos().get(position).getImage();
-        int drinkID = mTableDetailData.getTableDetail().getListBillInfos().get(position).getDrinkId();
-        if (drinkID == mDrink.getmDrink().getId()) {
-            holder.mTxtProductName.setText(String.valueOf(mDrink.getmDrink().getName()));
-        }
-
+        holder.mTxtProductName.setText(mTableDetailData.getTableDetail().getListBillInfos().get(position).getDrinkName());
         holder.mTxtProductPrice.setText(String.valueOf(mTableDetailData.getTableDetail().getListBillInfos().get(position).getSubPrice() + Money.VND));
         holder.mTxtProductQuantity.setText(String.valueOf(mTableDetailData.getTableDetail().getListBillInfos().get(position).getCount()));
     }
@@ -126,5 +125,29 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
         }
     }
 
+    private void verifyRemoveItem(String drinkName, final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage("Bạn có muốn xóa sản phẩm " + drinkName + " ra khỏi bàn?")
+                .setCancelable(false)
+                .setPositiveButton("Không", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Action for 'NO' Button
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("Có", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mTableDetailData.getTableDetail().getListBillInfos().remove(position);
+
+                        notifyDataSetChanged();
+                        LoginRepository.TOKEN = "";
+                        Toast.makeText(mContext, "Đã xóa",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.setTitle("Xóa sản phẩm");
+        alert.show();
+    }
 
 }

@@ -1,7 +1,9 @@
 package com.example.fcoffee.modules.Drink.presenter;
 
+import com.example.fcoffee.modules.Drink.model.DTOrequest.RequestBodyDrink;
 import com.example.fcoffee.modules.Drink.repositories.DrinkRepository;
 import com.example.fcoffee.modules.Drink.view.DrinkView;
+
 
 public class DrinkPresenter {
     private DrinkRepository mDrinkRepository;
@@ -20,4 +22,7 @@ public class DrinkPresenter {
         mDrinkRepository.getAll(mDrinkView);
     }
 
+    public void AddDrinkForTable(RequestBodyDrink requestBodyDrink) {
+        mDrinkRepository.AddDrinkForTable(requestBodyDrink, mDrinkView);
+    }
 }

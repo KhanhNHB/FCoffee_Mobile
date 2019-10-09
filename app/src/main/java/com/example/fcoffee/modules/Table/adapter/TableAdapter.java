@@ -1,5 +1,6 @@
 package com.example.fcoffee.modules.Table.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -44,6 +45,9 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
         if (status) {
             holder.mLLButtonTable.setBackgroundResource(R.drawable.button_background);
             holder.mTextView.setTextColor(Color.parseColor("#FFFFFF"));
+        } else {
+            holder.mLLButtonTable.setBackgroundResource(R.drawable.custom_frame_input);
+            holder.mTextView.setTextColor(Color.parseColor("#000000"));
         }
 
         holder.mLLButtonTable.setOnClickListener(new View.OnClickListener() {
@@ -53,8 +57,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
                 Bundle bundle = new Bundle();
                 bundle.putInt("table_number", tableNumber);
                 intent.putExtra("anonymouse_number", bundle);
-
-                mContext.startActivity(intent);
+                ((Activity)mContext).startActivityForResult(intent, 1);
             }
         });
     }

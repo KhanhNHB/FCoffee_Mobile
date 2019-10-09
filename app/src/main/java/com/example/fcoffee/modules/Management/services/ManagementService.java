@@ -1,11 +1,13 @@
 package com.example.fcoffee.modules.Management.services;
 
+import com.example.fcoffee.modules.Drink.model.DTOrequest.RequestBodyDrink;
 import com.example.fcoffee.modules.Table.model.DTOresponse.TableDetailData;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -17,14 +19,26 @@ public interface ManagementService {
     Call<TableDetailData> getTableByNumber(@Path("tableNumber") int tableNumber);
 
 //    @GET("/manager/getBill")
-//    Call<> getById(@Path("username") String username);
+//    Call<ResponseBody> getBill();
 
     @POST("/api/manager/addDrinkForTable")
-    Call<ResponseBody> create(@Body RequestBody model);
+    Call<ResponseBody> addDrinkForTable(@Body RequestBodyDrink requestBodyDrink);
 
     @PUT("api/manager/addCount/{billInfo}")
-    Call<ResponseBody> update(@Path("billInfo") int billInfo);
+    Call<ResponseBody> addCount(@Path("billInfo") int billInfo);
 
-//    @DELETE("/manager/removeDrink{billInfoId}")
-//    Call<> delete(@Path(@Path(billInfoId) int BillInfoId);
+    @PUT("api/manager/subCount/{billInfo}")
+    Call<ResponseBody> subCount(@Path("billInfo") int billInfo);
+
+    @PUT("api/manager/addDiscount/{billId}/{discount}")
+    Call<ResponseBody> addDiscount(@Path("billId") int billId, @Path("discount") int discount);
+
+    @PUT("api/manager/payment/{billId}")
+    Call<ResponseBody> payment(@Path("billId") int billId);
+
+    @PUT("api/manager/addDiscount/{fromTableNumber}/{toTableNumber}")
+    Call<ResponseBody> switchTable(@Path("fromTableNumber") int fromTableNumber, @Path("toTableNumber") int toTableNumber);
+
+    @DELETE("/api/manager/removeDrink{billInfoId}")
+    Call<ResponseBody> delete(@Path("billInfoId") int BillInfoId);
 }

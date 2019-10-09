@@ -96,7 +96,8 @@
             android:background="@drawable/custom_button_next_step"
             android:text="Xác nhận"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/dp16" />
+            android:textSize="@dimen/dp16"
+            android:onClick="clickToCheckIn"/>
 
     </LinearLayout>
 </LinearLayout>

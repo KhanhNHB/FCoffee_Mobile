@@ -35,6 +35,8 @@ public class BillInfo implements Serializable {
     @Expose
     private String image;
 
+    @SerializedName("name")
+    @Expose
     private String drinkName;
 
     public BillInfo() {
