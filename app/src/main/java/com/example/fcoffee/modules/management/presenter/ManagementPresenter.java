@@ -16,4 +16,8 @@ public class ManagementPresenter {
     public void payment(int billId) {
         mManagementRepository.payment(billId, mManagementView);
     }
+
+    public void addDiscount(int billId, float discount){
+        mManagementRepository.addDiscount(billId, discount, mManagementView);
+    }
 }
