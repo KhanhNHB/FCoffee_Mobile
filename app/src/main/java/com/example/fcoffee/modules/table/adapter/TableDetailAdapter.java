@@ -15,8 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fcoffee.R;
 import com.example.fcoffee.common.Money;
-import com.example.fcoffee.modules.account.repositories.LoginRepository;
+import com.example.fcoffee.modules.management.repositories.ManagementRepository;
+import com.example.fcoffee.modules.management.view.ManagementView;
 import com.example.fcoffee.modules.table.model.DTOresponse.TableDetailData;
+import com.example.fcoffee.utils.FormatMoney;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -25,10 +28,12 @@ import java.util.StringTokenizer;
 public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.ViewHolder> {
     private Context mContext;
     private TableDetailData mTableDetailData;
+    private TextView mTotalPrice;
 
-    public TableDetailAdapter(Context context, TableDetailData tableDetail) {
+    public TableDetailAdapter(Context context, TableDetailData tableDetail, TextView totalPrice) {
         mContext = context;
         mTableDetailData = tableDetail;
+        mTotalPrice = totalPrice;
     }
 
     public void updateTableDetailData(TableDetailData data){
@@ -57,7 +62,7 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
         holder.mImgBtnRemoveProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verifyRemoveItem(holder.mTxtProductName.getText().toString(), position);
+                verifyRemoveItem(mTableDetailData.getTableDetail().getListBillInfos().get(position).getDrinkName(), position);
             }
         });
 
@@ -66,10 +71,11 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
             public void onClick(View view) {
                 String currentQuantity = holder.mTxtProductQuantity.getText().toString();
                 int parseQuantity = Integer.parseInt(currentQuantity);
-
                 parseQuantity = parseQuantity + 1;
-                setCurrentPrice(holder, currentPrice, parseQuantity);
+                setCurrentPrice(holder, currentPrice, parseQuantity, false);
 
+                mTableDetailData.getTableDetail().getListBillInfos().get(position).setCount(parseQuantity);
+                holder.mManagementRepository.addCount(mTableDetailData.getTableDetail().getListBillInfos().get(position).getBillInfoId(), holder);
             }
         });
 
@@ -83,27 +89,48 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
                 if (parseQuantity > 1) {
                     parseQuantity = parseQuantity - 1;
 
-                    setCurrentPrice(holder, currentPrice, parseQuantity);
+                    setCurrentPrice(holder, currentPrice, parseQuantity, true);
+                    mTableDetailData.getTableDetail().getListBillInfos().get(position).setCount(parseQuantity);
+                    holder.mManagementRepository.subCount(mTableDetailData.getTableDetail().getListBillInfos().get(position).getBillInfoId(), holder);
                 }
             }
         });
     }
 
-    private void setCurrentPrice(final ViewHolder holder, String currentPrice, final int currentQuantity) {
+    private void setCurrentPrice(final ViewHolder holder, String currentPrice, final int currentQuantity, boolean isSubstraction) {
         StringTokenizer stk = new StringTokenizer(currentPrice);
         String price = stk.nextToken(" ");
 
-        NumberFormat format = new DecimalFormat("#,###");
-        String formatterPrice = format.format(Float.parseFloat(price) * currentQuantity) + Money.VND;
+        float originalPrice = Float.parseFloat(price);
+        float calculatePrice = originalPrice * currentQuantity;
 
+        float totalPrice = Float.parseFloat(mTotalPrice.getText().toString());
+
+        if (isSubstraction) {
+            totalPrice -= originalPrice;
+        } else {
+            totalPrice += originalPrice;
+        }
+
+        String formatCalculatePrice = FormatMoney.formatVND(calculatePrice) + Money.VND;
         holder.mTxtProductQuantity.setText(String.valueOf(currentQuantity));
-        holder.mTxtProductPrice.setText(formatterPrice);
+        holder.mTxtProductPrice.setText(formatCalculatePrice);
+
+        String formatTotalPrice = FormatMoney.formatVND(totalPrice);
+
+        formatTotalPrice = formatTotalPrice.replace(",", ".");
+        mTotalPrice.setText(formatTotalPrice);
     }
 
     private void initData(ViewHolder holder, int position) {
-//        holder.mImgProduct = mTableDetailData.getTableDetail().getListBillInfos().get(position).getImage();
+        Picasso.Builder builder = new Picasso.Builder(mContext);
+        builder.build().load(mTableDetailData.getTableDetail().getListBillInfos().get(position).getImage())
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .into(holder.mImgProduct);
+
         holder.mTxtProductName.setText(mTableDetailData.getTableDetail().getListBillInfos().get(position).getDrinkName());
-        holder.mTxtProductPrice.setText(String.valueOf(mTableDetailData.getTableDetail().getListBillInfos().get(position).getSubPrice() + Money.VND));
+        holder.mTxtProductPrice.setText(mTableDetailData.getTableDetail().getListBillInfos().get(position).getSubPrice() + Money.VND);
         holder.mTxtProductQuantity.setText(String.valueOf(mTableDetailData.getTableDetail().getListBillInfos().get(position).getCount()));
     }
 
@@ -112,13 +139,15 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
         return mTableDetailData == null ? 0 : mTableDetailData.getTableDetail().getListBillInfos().size();
     }
 
-    protected class ViewHolder extends RecyclerView.ViewHolder {
+    protected class ViewHolder extends RecyclerView.ViewHolder implements ManagementView {
         private ImageView mImgProduct, mImgBtnRemoveProduct, mBtnAddQuantity, mBtnRemoveQuantity;
         private TextView mTxtProductName, mTxtProductPrice, mTxtProductQuantity;
+        private ManagementRepository mManagementRepository;
 
         public ViewHolder(View view) {
             super(view);
             initView(view);
+            initData();
         }
 
         private void initView(View view) {
@@ -129,6 +158,27 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
             mBtnAddQuantity = view.findViewById(R.id.btn_add_quantity);
             mBtnRemoveQuantity = view.findViewById(R.id.btn_remove_quantity);
             mImgBtnRemoveProduct = view.findViewById(R.id.img_btn_remove_product);
+        }
+
+        private void initData() {
+            mManagementRepository = new ManagementRepository();
+
+            mBtnAddQuantity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+        }
+
+        @Override
+        public void onDrinkSuccess() {
+            Toast.makeText(mContext, "Vui lòng thao tác chậm lại", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onDrinkFail(String message) {
+            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -145,9 +195,7 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
                 .setNegativeButton("Có", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mTableDetailData.getTableDetail().getListBillInfos().remove(position);
-
                         notifyDataSetChanged();
-                        LoginRepository.TOKEN = "";
                         Toast.makeText(mContext, "Đã xóa",
                                 Toast.LENGTH_SHORT).show();
                     }
@@ -155,6 +203,7 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
         AlertDialog alert = builder.create();
         alert.setTitle("Xóa sản phẩm");
         alert.show();
-    }
 
+        builder.getContext();
+    }
 }

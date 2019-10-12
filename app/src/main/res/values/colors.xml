@@ -7,6 +7,6 @@
     <color name="colorBottomIcon">#1a2947</color>
     <color name="colorWhite">#fff</color>
     <color name="colorGray">#BEBBBB</color>
+    <color name="colorLightGray">#F5F5F5</color>
     <color name="colorBlack">#000</color>
-    <color name="colorLightGray">#f5f6f7</color>
 </resources>

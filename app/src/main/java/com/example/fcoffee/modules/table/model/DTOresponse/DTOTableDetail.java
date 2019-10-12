@@ -92,6 +92,7 @@ public class DTOTableDetail implements Serializable {
         return billId;
     }
 
+
     public List<BillInfo> getListBillInfos() {
         return listBillInfos;
     }
