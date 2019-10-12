@@ -29,11 +29,13 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
     private Context mContext;
     private TableDetailData mTableDetailData;
     private TextView mTotalPrice;
+    private Float tempPrice;
 
-    public TableDetailAdapter(Context context, TableDetailData tableDetail, TextView totalPrice) {
+    public TableDetailAdapter(Context context, TableDetailData tableDetail, TextView totalPrice, float price) {
         mContext = context;
         mTableDetailData = tableDetail;
         mTotalPrice = totalPrice;
+        tempPrice = price;
     }
 
     public void updateTableDetailData(TableDetailData data){
@@ -104,19 +106,17 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
         float originalPrice = Float.parseFloat(price);
         float calculatePrice = originalPrice * currentQuantity;
 
-        float totalPrice = Float.parseFloat(mTotalPrice.getText().toString());
-
         if (isSubstraction) {
-            totalPrice -= originalPrice;
+            tempPrice -= originalPrice;
         } else {
-            totalPrice += originalPrice;
+            tempPrice += originalPrice;
         }
 
-        String formatCalculatePrice = FormatMoney.formatVND(calculatePrice) + Money.VND;
+        String formatCalculatePrice = FormatMoney.formatVND(calculatePrice);
         holder.mTxtProductQuantity.setText(String.valueOf(currentQuantity));
         holder.mTxtProductPrice.setText(formatCalculatePrice);
 
-        String formatTotalPrice = FormatMoney.formatVND(totalPrice);
+        String formatTotalPrice = FormatMoney.formatVND(tempPrice);
 
         formatTotalPrice = formatTotalPrice.replace(",", ".");
         mTotalPrice.setText(formatTotalPrice);
@@ -130,7 +130,7 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
                 .into(holder.mImgProduct);
 
         holder.mTxtProductName.setText(mTableDetailData.getTableDetail().getListBillInfos().get(position).getDrinkName());
-        holder.mTxtProductPrice.setText(mTableDetailData.getTableDetail().getListBillInfos().get(position).getSubPrice() + Money.VND);
+        holder.mTxtProductPrice.setText(FormatMoney.formatVND(mTableDetailData.getTableDetail().getListBillInfos().get(position).getSubPrice()));
         holder.mTxtProductQuantity.setText(String.valueOf(mTableDetailData.getTableDetail().getListBillInfos().get(position).getCount()));
     }
 
