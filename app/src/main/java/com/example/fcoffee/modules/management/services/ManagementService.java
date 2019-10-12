@@ -30,7 +30,7 @@ public interface ManagementService {
     Call<ResponseBody> subCount(@Path("billInfo") int billInfo);
 
     @PUT("api/manager/addDiscount/{billId}/{discount}")
-    Call<ResponseBody> addDiscount(@Path("billId") int billId, @Path("discount") int discount);
+    Call<ResponseBody> addDiscount(@Path("billId") int billId, @Path("discount") float discount);
 
     @PUT("api/manager/payment/{billId}")
     Call<ResponseBody> payment(@Path("billId") int billId);
