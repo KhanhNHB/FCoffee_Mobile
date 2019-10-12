@@ -1,5 +1,8 @@
 package com.example.fcoffee.modules.table.repositories;
 
+import android.util.Log;
+
+import com.example.fcoffee.common.App;
 import com.example.fcoffee.common.Error;
 import com.example.fcoffee.modules.dink.services.DrinkService;
 import com.example.fcoffee.modules.management.services.ManagementService;
@@ -30,17 +33,18 @@ public class TableRepository {
             @Override
             public void onResponse(Call<TableData> call, Response<TableData> response) {
                 if (response.code() == 200) {
-                    TableData dto = new TableData();
-                    dto = response.body();
+                    TableData dto = response.body();
                     tableView.onTableSuccessGetAll(dto);
                 } else {
-                    tableView.onTableFail(Error.TAG_ERROR_RESPONSE);
+                    tableView.onTableFail(Error.TAG_SYSTEM_BUSY);
+                    Log.d(Error.TAG_ERROR_RESPONSE, response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<TableData> call, Throwable t) {
-                tableView.onTableFail(Error.TAG_ERROR_REQUEST + t.getMessage());
+                tableView.onTableFail(Error.TAG_SYSTEM_BUSY);
+                Log.d(Error.TAG_ERROR_RESPONSE, t.getMessage());
             }
         });
     }
@@ -66,24 +70,4 @@ public class TableRepository {
             }
         });
     }
-
-//    public void getByDrinkId(final int id, final TableView tableView) {
-//        Call<DrinkDTO> callDrinkService = mDrinkService.getById(id);
-//        callDrinkService.enqueue(new Callback<DrinkDTO>() {
-//            @Override
-//            public void onResponse(Call<DrinkDTO> call, Response<DrinkDTO> response) {
-//                if (response.code() == 200) {
-//                    DrinkDTO drink;
-//                    drink = response.body();
-//                } else {
-//                    tableView.onTableFail(Error.TAG_SYSTEM_BUSY);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<DrinkDTO> call, Throwable t) {
-//                tableView.onTableFail(Error.TAG_SYSTEM_BUSY);
-//            }
-//        });
-//    }
 }

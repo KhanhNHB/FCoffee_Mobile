@@ -38,6 +38,6 @@ public interface ManagementService {
     @PUT("api/manager/addDiscount/{fromTableNumber}/{toTableNumber}")
     Call<ResponseBody> switchTable(@Path("fromTableNumber") int fromTableNumber, @Path("toTableNumber") int toTableNumber);
 
-    @DELETE("/api/manager/removeDrink{billInfoId}")
+    @DELETE("/api/manager/removeDrink/{billInfoId}")
     Call<ResponseBody> delete(@Path("billInfoId") int BillInfoId);
 }

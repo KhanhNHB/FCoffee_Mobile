@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fcoffee.R;
+import com.example.fcoffee.common.Money;
 import com.example.fcoffee.modules.dink.activity.DrinkActivity;
 import com.example.fcoffee.modules.management.presenter.ManagementPresenter;
 import com.example.fcoffee.modules.management.view.ManagementView;
@@ -23,7 +24,9 @@ import com.example.fcoffee.modules.table.model.DTOresponse.TableData;
 import com.example.fcoffee.modules.table.presenter.TablePresenter;
 import com.example.fcoffee.modules.table.view.TableView;
 
-import java.util.List;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.StringTokenizer;
 
 public class TableDetailActivity extends AppCompatActivity implements TableView, ManagementView {
     private static final int DRINK = 1998;
@@ -37,7 +40,7 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
 
     private ImageView btn_back, btn_add_drink;
     private Button btn_checkout;
-    private TextView txt_table_name;
+    private TextView mTxtTableName, mTxtTotalPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,8 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
         btn_back = findViewById(R.id.btn_back);
         btn_add_drink = findViewById(R.id.btn_add_drink);
         btn_checkout = findViewById(R.id.btn_check_out);
-        txt_table_name = findViewById(R.id.txt_table_name);
+        mTxtTableName = findViewById(R.id.txt_table_name);
+        mTxtTotalPrice = findViewById(R.id.txt_total_price);
 
         mRecyclerView = findViewById(R.id.rcv_table_detail);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1);
@@ -68,7 +72,7 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
 
         mTablePresenter.getByNumber(tableNumber);
 
-        txt_table_name.setText("Bàn " + tableNumber);
+        mTxtTableName.setText("Bàn " + tableNumber);
         btn_back.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -98,6 +102,7 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
     public void onTableSuccessGetByNumber(TableDetailData tableDetail) {
         if (tableDetail != null) {
             mTableDetail = tableDetail;
+            mTxtTotalPrice.setText(String.valueOf(mTableDetail.getTableDetail().getTotalPrice()));
             updateRcv(mTableDetail);
         }
     }
@@ -109,7 +114,7 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
 
     private void updateRcv(TableDetailData data) {
         if (mTableDetailAdapter == null) {
-            mTableDetailAdapter = new TableDetailAdapter(this, data);
+            mTableDetailAdapter = new TableDetailAdapter(this, data, mTxtTotalPrice);
             mRecyclerView.setAdapter(mTableDetailAdapter);
         } else {
             mTableDetailAdapter.updateTableDetailData(data);

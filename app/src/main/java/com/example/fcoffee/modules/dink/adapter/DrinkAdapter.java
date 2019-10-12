@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.fcoffee.R;
 import com.example.fcoffee.common.Money;
 import com.example.fcoffee.modules.dink.model.DTOresponse.DrinkData;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -85,7 +86,11 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.ViewHolder> 
     }
 
     private void initData(ViewHolder holder, int position) {
-//        holder.mImgProduct = mTableDetailData.getTableDetail().getListBillInfos().get(position).getImage();
+        Picasso.Builder builder = new Picasso.Builder(mContext);
+        builder.build().load(mDrinks.getmDrink().get(position).getImage())
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .into(holder.mImgProduct);
 
         holder.mTxtProductName.setText(mDrinks.getmDrink().get(position).getName());
         holder.mTxtProductPrice.setText("0" + Money.VND);

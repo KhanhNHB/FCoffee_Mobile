@@ -88,4 +88,8 @@ public class BillInfo implements Serializable {
     public String getDrinkName() {
         return drinkName;
     }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 }

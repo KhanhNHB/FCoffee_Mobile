@@ -54,7 +54,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
             holder.mLLButtonTable.setBackgroundResource(R.drawable.button_background);
             holder.mTextView.setTextColor(Color.parseColor("#FFFFFF"));
         } else {
-            holder.mLLButtonTable.setBackgroundResource(R.drawable.custom_frame_input);
+            holder.mLLButtonTable.setBackgroundResource(R.drawable.custom_frame_input_important);
             holder.mTextView.setTextColor(Color.parseColor("#000000"));
         }
 

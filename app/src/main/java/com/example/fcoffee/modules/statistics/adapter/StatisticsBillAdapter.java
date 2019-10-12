@@ -13,6 +13,7 @@ import com.example.fcoffee.R;
 import com.example.fcoffee.common.Error;
 import com.example.fcoffee.modules.bill.model.DTOresponse.DTOBillList;
 import com.example.fcoffee.modules.billInfo.activity.BillInfoActivity;
+import com.example.fcoffee.utils.FormatMoney;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,9 +29,7 @@ public class StatisticsBillAdapter extends RecyclerView.Adapter<StatisticsBillAd
     private DTOBillList mBill;
     private SimpleDateFormat sdf = new SimpleDateFormat(Error.DATE_FORMAT);
 
-    private Locale localeVN = new Locale("vi", "VN");
 
-    private NumberFormat nf = NumberFormat.getCurrencyInstance(localeVN);
     public StatisticsBillAdapter(Context mContext, DTOBillList mBill){
         this.mBill = mBill;
         this.mContext = mContext;
@@ -52,7 +51,7 @@ public class StatisticsBillAdapter extends RecyclerView.Adapter<StatisticsBillAd
         final float price = mBill.getBillList().get(position).getTotalPrice();
         final Date date = mBill.getBillList().get(position).getCreateAt();
         final String dateString = sdf.format(date);
-        final String priceString = nf.format(price);
+        final String priceString = FormatMoney.formatVND(price);
 
         holder.mTextViewCount.setText(String.valueOf(position + 1));
         holder.mTextViewTableNumber.setText(String.valueOf(tableNumber));
