@@ -23,10 +23,7 @@ import com.example.fcoffee.modules.table.model.DTOresponse.TableDetailData;
 import com.example.fcoffee.modules.table.model.DTOresponse.TableData;
 import com.example.fcoffee.modules.table.presenter.TablePresenter;
 import com.example.fcoffee.modules.table.view.TableView;
-
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.StringTokenizer;
+import com.example.fcoffee.utils.FormatMoney;
 
 public class TableDetailActivity extends AppCompatActivity implements TableView, ManagementView {
     private static final int DRINK = 1998;
@@ -34,6 +31,7 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
     private TableDetailData mTableDetail;
     private TableDetailAdapter mTableDetailAdapter;
     private int tableNumber;
+    private TextView mTxtDiscount;
 
     private TablePresenter mTablePresenter;
     private ManagementPresenter mManagementPresenter;
@@ -56,6 +54,7 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
         btn_checkout = findViewById(R.id.btn_check_out);
         mTxtTableName = findViewById(R.id.txt_table_name);
         mTxtTotalPrice = findViewById(R.id.txt_total_price);
+        mTxtDiscount = findViewById(R.id.txt_discount);
 
         mRecyclerView = findViewById(R.id.rcv_table_detail);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1);
@@ -102,7 +101,8 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
     public void onTableSuccessGetByNumber(TableDetailData tableDetail) {
         if (tableDetail != null) {
             mTableDetail = tableDetail;
-            mTxtTotalPrice.setText(String.valueOf(mTableDetail.getTableDetail().getTotalPrice()));
+            mTxtTotalPrice.setText(FormatMoney.formatVND(mTableDetail.getTableDetail().getTotalPrice()));
+            mTxtDiscount.setText(String.valueOf(mTableDetail.getTableDetail().getDiscount()));
             updateRcv(mTableDetail);
         }
     }
@@ -114,7 +114,7 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
 
     private void updateRcv(TableDetailData data) {
         if (mTableDetailAdapter == null) {
-            mTableDetailAdapter = new TableDetailAdapter(this, data, mTxtTotalPrice);
+            mTableDetailAdapter = new TableDetailAdapter(this, data, mTxtTotalPrice, mTableDetail.getTableDetail().getTotalPrice()) ;
             mRecyclerView.setAdapter(mTableDetailAdapter);
         } else {
             mTableDetailAdapter.updateTableDetailData(data);
