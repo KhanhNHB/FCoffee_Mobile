@@ -18,7 +18,7 @@ import com.example.fcoffee.modules.table.model.DTOresponse.TableData;
 import com.example.fcoffee.modules.table.presenter.TablePresenter;
 import com.example.fcoffee.modules.table.view.TableView;
 
-public class TableFragment extends Fragment implements TableView {
+public class TableFragment extends Fragment implements TableView, View.OnLongClickListener {
 
     private View mView;
     private RecyclerView mRecyclerView;
@@ -90,5 +90,10 @@ public class TableFragment extends Fragment implements TableView {
         } else {
             mTableAdapter.updateTableDetailData(mTables);
         }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        return false;
     }
 }

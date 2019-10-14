@@ -5,18 +5,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.fcoffee.R;
+import com.example.fcoffee.modules.management.presenter.ManagementPresenter;
+import com.example.fcoffee.modules.management.view.ManagementView;
 import com.example.fcoffee.modules.table.activity.TableDetailActivity;
+import com.example.fcoffee.modules.table.activity.TableFragment;
+import com.example.fcoffee.modules.table.model.DTOrequest.Table;
 import com.example.fcoffee.modules.table.model.DTOresponse.TableData;
 
 public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> {
@@ -48,14 +58,14 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
         final int tableNumber = mTables.getmTables().get(position).getTableNumber();
         final boolean status = mTables.getmTables().get(position).isStatus();
 
-        holder.mTextView.setText("Bàn " + tableNumber);
+        holder.mTxtTileTable.setText("Bàn " + tableNumber);
 
         if (status) {
             holder.mLLButtonTable.setBackgroundResource(R.drawable.button_background);
-            holder.mTextView.setTextColor(Color.parseColor("#FFFFFF"));
+            holder.mTxtTileTable.setTextColor(Color.parseColor("#FFFFFF"));
         } else {
             holder.mLLButtonTable.setBackgroundResource(R.drawable.custom_frame_input_important);
-            holder.mTextView.setTextColor(Color.parseColor("#000000"));
+            holder.mTxtTileTable.setTextColor(Color.parseColor("#000000"));
         }
 
         holder.mLLButtonTable.setOnClickListener(new View.OnClickListener() {
@@ -68,24 +78,75 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
                 ((Activity)mContext).startActivityForResult(intent, 1);
             }
         });
-    }
 
+        holder.mLLButtonTable.setOnCreateContextMenuListener((View.OnCreateContextMenuListener) mContext);
+    }
 
     @Override
     public int getItemCount() {
         return mTables != null ? mTables.getmTables().size() : 0;
     }
 
-    protected class ViewHolder extends RecyclerView.ViewHolder {
+    protected class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener, ManagementView {
         private ImageView mImageView;
-        private TextView mTextView;
+        private TextView mTxtTileTable;
         private LinearLayout mLLButtonTable;
+        private ManagementPresenter mManagementPresenter;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            mImageView = itemView.findViewById(R.id.img_icon_table);
-            mTextView = itemView.findViewById(R.id.txt_title_table);
-            mLLButtonTable = itemView.findViewById(R.id.ll_button_table);
+            initView(itemView);
+            initData();
+        }
+
+        private void initView(View view) {
+            mImageView = view.findViewById(R.id.img_icon_table);
+            mTxtTileTable = view.findViewById(R.id.txt_title_table);
+            mLLButtonTable = view.findViewById(R.id.ll_button_table);
+        }
+
+        private void initData() {
+            itemView.setOnCreateContextMenuListener(this);
+            mManagementPresenter = new ManagementPresenter(this);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.setHeaderTitle("Chuyển bàn");
+
+            createMenu(menu);
+        }
+
+        private void createMenu(Menu menu) {
+            menu.setQwertyMode(true);
+            MenuItem container = null;
+
+            for (Table table : mTables.getmTables()) {
+                container = menu.add(0, table.getTableNumber(), table.getTableNumber(), "Bàn " + table.getTableNumber());
+                container.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        String toTable = item.toString();
+                        String[] toNumberTable = toTable.split(" ");
+                        String currentTable = mTxtTileTable.getText().toString();
+                        String[] fromNumberTable = currentTable.split(" ");
+
+                        mManagementPresenter.switchTable(Integer.parseInt(fromNumberTable[1]) ,Integer.parseInt(toNumberTable[1]));
+                        return true;
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onDrinkSuccess() {
+
+            Toast.makeText(mContext, "Chuyển bàn thành công", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onDrinkFail(String message) {
+            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
         }
     }
 }

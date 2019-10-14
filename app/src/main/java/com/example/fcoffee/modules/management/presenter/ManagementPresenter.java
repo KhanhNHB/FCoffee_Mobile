@@ -17,6 +17,10 @@ public class ManagementPresenter {
         mManagementRepository.payment(billId, mManagementView);
     }
 
+    public void switchTable(int fromNumberTable, int toNumberTable) {
+        mManagementRepository.switchTable(fromNumberTable, toNumberTable, mManagementView);
+    }
+
     public void addDiscount(int billId, float discount){
         mManagementRepository.addDiscount(billId, discount, mManagementView);
     }
