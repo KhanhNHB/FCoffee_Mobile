@@ -111,6 +111,29 @@ public class ManagementRepository {
         }
     }
 
+    public void addDiscount(int billId, float discount, final ManagementView managementView){
+        try {
+            Call<ResponseBody> call = mManagementService.addDiscount(billId, discount);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.code() == 200) {
+                        managementView.onDiscountSuccess();
+                    } else {
+                        managementView.onDiscountFail(Error.TAG_SYSTEM_BUSY);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    managementView.onDiscountFail(Error.TAG_SYSTEM_BUSY);
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public void switchTable(int fromNumberTable, int toNumberTable, final ManagementView managementView) {
         Call<ResponseBody> call = mManagementService.switchTable(fromNumberTable, toNumberTable);
         call.enqueue(new Callback<ResponseBody>() {

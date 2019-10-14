@@ -196,12 +196,22 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
 
         @Override
         public void onDrinkSuccess() {
-            Toast.makeText(mContext, "Vui lòng thao tác chậm lại", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Đã thêm thành công", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onDrinkFail(String message) {
             Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onDiscountSuccess() {
+
+        }
+
+        @Override
+        public void onDiscountFail(String message) {
+
         }
     }
 }
