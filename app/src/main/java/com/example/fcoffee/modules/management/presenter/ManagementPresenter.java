@@ -16,4 +16,8 @@ public class ManagementPresenter {
     public void payment(int billId) {
         mManagementRepository.payment(billId, mManagementView);
     }
+
+    public void switchTable(int fromNumberTable, int toNumberTable) {
+        mManagementRepository.switchTable(fromNumberTable, toNumberTable, mManagementView);
+    }
 }

@@ -14,15 +14,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fcoffee.R;
-import com.example.fcoffee.common.Money;
 import com.example.fcoffee.modules.management.repositories.ManagementRepository;
 import com.example.fcoffee.modules.management.view.ManagementView;
 import com.example.fcoffee.modules.table.model.DTOresponse.TableDetailData;
 import com.example.fcoffee.utils.FormatMoney;
 import com.squareup.picasso.Picasso;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.StringTokenizer;
 
 public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.ViewHolder> {
@@ -64,7 +61,7 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
         holder.mImgBtnRemoveProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verifyRemoveItem(mTableDetailData.getTableDetail().getListBillInfos().get(position).getDrinkName(), position);
+                holder.verifyRemoveItem(mTableDetailData.getTableDetail().getListBillInfos().get(position).getDrinkName(), position, holder);
             }
         });
 
@@ -171,6 +168,32 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
             });
         }
 
+        private void verifyRemoveItem(String drinkName, final int position, final ViewHolder holder) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setMessage("Bạn có muốn xóa sản phẩm " + drinkName + " ra khỏi bàn?")
+                    .setCancelable(false)
+                    .setPositiveButton("Không", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //  Action for 'NO' Button\
+                            dialog.cancel();
+                        }
+                    })
+                    .setNegativeButton("Có", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            mManagementRepository.delete(mTableDetailData.getTableDetail().getListBillInfos().get(position).getBillInfoId(), holder);
+                            mTableDetailData.getTableDetail().getListBillInfos().remove(position);
+                            notifyDataSetChanged();
+                            Toast.makeText(mContext, "Đã xóa",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.setTitle("Xóa sản phẩm");
+            alert.show();
+
+            builder.getContext();
+        }
+
         @Override
         public void onDrinkSuccess() {
             Toast.makeText(mContext, "Vui lòng thao tác chậm lại", Toast.LENGTH_SHORT).show();
@@ -180,30 +203,5 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
         public void onDrinkFail(String message) {
             Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void verifyRemoveItem(String drinkName, final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setMessage("Bạn có muốn xóa sản phẩm " + drinkName + " ra khỏi bàn?")
-                .setCancelable(false)
-                .setPositiveButton("Không", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Action for 'NO' Button
-                        dialog.cancel();
-                    }
-                })
-                .setNegativeButton("Có", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        mTableDetailData.getTableDetail().getListBillInfos().remove(position);
-                        notifyDataSetChanged();
-                        Toast.makeText(mContext, "Đã xóa",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.setTitle("Xóa sản phẩm");
-        alert.show();
-
-        builder.getContext();
     }
 }

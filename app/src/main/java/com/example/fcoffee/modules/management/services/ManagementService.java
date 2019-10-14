@@ -23,20 +23,20 @@ public interface ManagementService {
     @POST("/api/manager/addDrinkForTable")
     Call<ResponseBody> addDrinkForTable(@Body RequestBodyDrink requestBodyDrink);
 
-    @PUT("api/manager/addCount/{billInfo}")
+    @PUT("/api/manager/addCount/{billInfo}")
     Call<ResponseBody> addCount(@Path("billInfo") int billInfo);
 
-    @PUT("api/manager/subCount/{billInfo}")
+    @PUT("/api/manager/subCount/{billInfo}")
     Call<ResponseBody> subCount(@Path("billInfo") int billInfo);
 
-    @PUT("api/manager/addDiscount/{billId}/{discount}")
+    @PUT("/api/manager/addDiscount/{billId}/{discount}")
     Call<ResponseBody> addDiscount(@Path("billId") int billId, @Path("discount") int discount);
 
-    @PUT("api/manager/payment/{billId}")
+    @PUT("/api/manager/payment/{billId}")
     Call<ResponseBody> payment(@Path("billId") int billId);
 
-    @PUT("api/manager/addDiscount/{fromTableNumber}/{toTableNumber}")
-    Call<ResponseBody> switchTable(@Path("fromTableNumber") int fromTableNumber, @Path("toTableNumber") int toTableNumber);
+    @PUT("/api/manager/switchTables/{tableNumberFrom}/{tableNumberTo}")
+    Call<ResponseBody> switchTable(@Path("tableNumberFrom") int tableNumberFrom, @Path("tableNumberTo") int tableNumberTo);
 
     @DELETE("/api/manager/removeDrink/{billInfoId}")
     Call<ResponseBody> delete(@Path("billInfoId") int BillInfoId);

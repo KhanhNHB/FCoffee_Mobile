@@ -1,5 +1,7 @@
 package com.example.fcoffee.modules.management.repositories;
 
+import android.util.Log;
+
 import com.example.fcoffee.common.Error;
 import com.example.fcoffee.modules.management.services.ManagementService;
 import com.example.fcoffee.modules.management.view.ManagementView;
@@ -107,5 +109,26 @@ public class ManagementRepository {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void switchTable(int fromNumberTable, int toNumberTable, final ManagementView managementView) {
+        Call<ResponseBody> call = mManagementService.switchTable(fromNumberTable, toNumberTable);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200) {
+                    managementView.onDrinkSuccess();
+                } else {
+                    managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                    Log.d(Error.TAG_ERROR_RESPONSE, response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                Log.d(Error.TAG_ERROR_RESPONSE, t.getMessage());
+            }
+        });
     }
 }

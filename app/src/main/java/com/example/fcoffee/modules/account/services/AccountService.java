@@ -1,6 +1,7 @@
 package com.example.fcoffee.modules.account.services;
 
 import com.example.fcoffee.modules.account.models.Account;
+import com.example.fcoffee.modules.account.models.DTOAccountResponse.DTOAccountResponse;
 
 import java.util.List;
 
@@ -22,8 +23,8 @@ public interface AccountService {
     @GET("/")
     Call<List<Account>> get();
 
-    @GET("/{username}")
-    Call<Account> getById(@Path("username") String username);
+    @GET("/api/account/getInfo")
+    Call<DTOAccountResponse> getInfo();
 
     @POST("/")
     Call<Account> create(@Body Account account);
