@@ -19,7 +19,6 @@ import com.example.fcoffee.modules.dink.activity.DrinkActivity;
 import com.example.fcoffee.modules.management.presenter.ManagementPresenter;
 import com.example.fcoffee.modules.management.view.ManagementView;
 import com.example.fcoffee.modules.table.adapter.TableDetailAdapter;
-import com.example.fcoffee.modules.table.model.DTOrequest.Table;
 import com.example.fcoffee.modules.table.model.DTOresponse.TableDetailData;
 import com.example.fcoffee.modules.table.model.DTOresponse.TableData;
 import com.example.fcoffee.modules.table.presenter.TablePresenter;
@@ -78,7 +77,6 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
 
         mTxtTableName.setText("Bàn " + tableNumber);
         btn_back.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 finish();
@@ -122,7 +120,7 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
         if (tableDetail != null) {
             mTableDetail = tableDetail;
             mTxtTotalPrice.setText(FormatMoney.formatVND(mTableDetail.getTableDetail().getTotalPrice()));
-            mTxtDiscount.setText(String.valueOf(mTableDetail.getTableDetail().getDiscount())+ " %");
+            mTxtDiscount.setText(mTableDetail.getTableDetail().getDiscount()+ " %");
             updateRcv(mTableDetail);
         }
     }
@@ -134,7 +132,7 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
 
     private void updateRcv(TableDetailData data) {
         if (mTableDetailAdapter == null) {
-            mTableDetailAdapter = new TableDetailAdapter(this, data, mTxtTotalPrice, mTableDetail.getTableDetail().getTotalPrice()) ;
+            mTableDetailAdapter = new TableDetailAdapter(this, data, mTxtTotalPrice);
             mRecyclerView.setAdapter(mTableDetailAdapter);
         } else {
             mTableDetailAdapter.updateTableDetailData(data);
@@ -147,15 +145,22 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
         } else {
             int billId = mTableDetail.getTableDetail().getBillId();
             mManagementPresenter.payment(billId);
-            Intent returnIntent = new Intent();
-            setResult(Activity.RESULT_CANCELED, returnIntent);
         }
     }
 
     @Override
     public void onDrinkSuccess() {
+    }
+
+    @Override
+    public void onCheckoutSuccess() {
         Toast.makeText(this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
         finish();
+    }
+
+    @Override
+    public void onRemoveDrinkSuccess() {
+        Toast.makeText(this, "Xóa thành công", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -169,11 +174,6 @@ public class TableDetailActivity extends AppCompatActivity implements TableView,
 
     @Override
     public void onDiscountFail(String message) {
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

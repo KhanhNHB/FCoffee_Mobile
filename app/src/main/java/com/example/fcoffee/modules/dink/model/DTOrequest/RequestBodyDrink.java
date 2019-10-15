@@ -1,6 +1,6 @@
 package com.example.fcoffee.modules.dink.model.DTOrequest;
 
-import com.example.fcoffee.modules.dink.model.DTO.Drinks;
+import com.example.fcoffee.modules.dink.model.DTO.Drink;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -11,7 +11,7 @@ public class RequestBodyDrink implements Serializable {
 
     @SerializedName("listDrink")
     @Expose
-    private List<Drinks> listDrink;
+    private List<Drink> listDrink;
 
 
     @SerializedName("tableNumber")
@@ -20,7 +20,7 @@ public class RequestBodyDrink implements Serializable {
 
     public RequestBodyDrink() {}
 
-    public RequestBodyDrink(int tableNumber, List<Drinks> listDrink) {
+    public RequestBodyDrink(int tableNumber, List<Drink> listDrink) {
         this.tableNumber = tableNumber;
         this.listDrink = listDrink;
     }
@@ -33,11 +33,11 @@ public class RequestBodyDrink implements Serializable {
         this.tableNumber = tableNumber;
     }
 
-    public List<Drinks> getListDrink() {
+    public List<Drink> getListDrink() {
         return listDrink;
     }
 
-    public void setListDrink(List<Drinks> listDrink) {
+    public void setListDrink(List<Drink> listDrink) {
         this.listDrink = listDrink;
     }
 }

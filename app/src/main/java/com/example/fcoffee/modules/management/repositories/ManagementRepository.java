@@ -65,14 +65,14 @@ public class ManagementRepository {
         }
     }
 
-    public void delete(int billInfoId, final ManagementView managementView) {
+    public void delete(int billInfoId, boolean isLastItem, final ManagementView managementView) {
         try {
-            Call<ResponseBody> call = mManagementService.delete(billInfoId);
+            Call<ResponseBody> call = mManagementService.delete(billInfoId, isLastItem);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.code() == 200) {
-                        managementView.onDrinkSuccess();
+                        managementView.onRemoveDrinkSuccess();
                     } else {
                         managementView.onDrinkFail(Error.TAG_ERROR_RESPONSE + "Xóa thất bại");
                     }
@@ -95,7 +95,7 @@ public class ManagementRepository {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.code() == 200) {
-                        managementView.onDrinkSuccess();
+                        managementView.onCheckoutSuccess();
                     } else {
                         managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
                     }

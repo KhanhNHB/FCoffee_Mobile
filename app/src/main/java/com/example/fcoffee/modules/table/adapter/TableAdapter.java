@@ -17,7 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -32,10 +34,12 @@ import com.example.fcoffee.modules.table.model.DTOresponse.TableData;
 public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> {
     private Context mContext;
     private TableData mTables;
+    private TableFragment mTableFragment;
 
-    public TableAdapter(Context mContext, TableData Tables) {
+    public TableAdapter(Context mContext, TableData Tables, TableFragment tableFragment) {
         this.mContext = mContext;
         this.mTables = Tables;
+        this.mTableFragment = tableFragment;
     }
 
     public void updateTableDetailData(TableData tables){
@@ -92,6 +96,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
         private TextView mTxtTileTable;
         private LinearLayout mLLButtonTable;
         private ManagementPresenter mManagementPresenter;
+        private ViewPager mViewPager;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -103,6 +108,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
             mImageView = view.findViewById(R.id.img_icon_table);
             mTxtTileTable = view.findViewById(R.id.txt_title_table);
             mLLButtonTable = view.findViewById(R.id.ll_button_table);
+            mViewPager = view.findViewById(R.id.vp_home);
         }
 
         private void initData() {
@@ -112,9 +118,10 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.setHeaderTitle("Chuyển bàn");
-
-            createMenu(menu);
+            if (mLLButtonTable.getBackground().getConstantState() ==  mContext.getDrawable(R.drawable.button_background).getConstantState()) {
+                menu.setHeaderTitle("Chuyển bàn");
+                createMenu(menu);
+            }
         }
 
         private void createMenu(Menu menu) {
@@ -122,6 +129,10 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
             MenuItem container = null;
 
             for (Table table : mTables.getmTables()) {
+                if (("Bàn " + table.getTableNumber()).equals(mTxtTileTable.getText().toString())) {
+                    continue;
+                }
+
                 container = menu.add(0, table.getTableNumber(), table.getTableNumber(), "Bàn " + table.getTableNumber());
                 container.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
@@ -140,13 +151,32 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
 
         @Override
         public void onDrinkSuccess() {
-
             Toast.makeText(mContext, "Chuyển bàn thành công", Toast.LENGTH_SHORT).show();
+            mTableFragment.onResume();
+        }
+
+        @Override
+        public void onCheckoutSuccess() {
+
+        }
+
+        @Override
+        public void onRemoveDrinkSuccess() {
         }
 
         @Override
         public void onDrinkFail(String message) {
             Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onDiscountSuccess() {
+
+        }
+
+        @Override
+        public void onDiscountFail(String message) {
+
         }
     }
 }

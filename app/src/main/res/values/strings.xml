@@ -10,4 +10,14 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="category_array">
+        <item>Tất cả</item>
+        <item>Nước trái cây</item>
+        <item>Các loại trà</item>
+        <item>Các loại cafe</item>
+        <item>Đồ uống có gas</item>
+        <item>Đồ uống đá xay</item>
+        <item>Sữa</item>
+    </string-array>
 </resources>

@@ -71,7 +71,8 @@
         <Spinner
             android:id="@+id/catgories_spinner"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent" />
+            android:layout_height="match_parent"
+            android:layout_gravity="right"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Drinks implements Serializable {
+public class Drink implements Serializable {
 
     @SerializedName("count")
     @Expose
@@ -15,9 +15,9 @@ public class Drinks implements Serializable {
     @Expose
     private int drinkId;
 
-    public Drinks() {}
+    public Drink() {}
 
-    public Drinks(int count, int drinkId) {
+    public Drink(int count, int drinkId) {
         this.count = count;
         this.drinkId = drinkId;
     }

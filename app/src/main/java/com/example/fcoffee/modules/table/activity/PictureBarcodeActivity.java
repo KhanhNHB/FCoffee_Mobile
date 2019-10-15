@@ -276,6 +276,16 @@ public class PictureBarcodeActivity extends AppCompatActivity implements View.On
     }
 
     @Override
+    public void onCheckoutSuccess() {
+
+    }
+
+    @Override
+    public void onRemoveDrinkSuccess() {
+
+    }
+
+    @Override
     public void onDrinkFail(String message) {
 
     }

@@ -29,8 +29,6 @@ public interface ManagementService {
     @PUT("/api/manager/subCount/{billInfo}")
     Call<ResponseBody> subCount(@Path("billInfo") int billInfo);
 
-    @PUT("/api/manager/addDiscount/{billId}/{discount}")
-    Call<ResponseBody> addDiscount(@Path("billId") int billId, @Path("discount") int discount);
     @PUT("api/manager/addDiscount/{billId}/{discount}")
     Call<ResponseBody> addDiscount(@Path("billId") int billId, @Path("discount") float discount);
 
@@ -40,6 +38,6 @@ public interface ManagementService {
     @PUT("/api/manager/switchTables/{tableNumberFrom}/{tableNumberTo}")
     Call<ResponseBody> switchTable(@Path("tableNumberFrom") int tableNumberFrom, @Path("tableNumberTo") int tableNumberTo);
 
-    @DELETE("/api/manager/removeDrink/{billInfoId}")
-    Call<ResponseBody> delete(@Path("billInfoId") int BillInfoId);
+    @DELETE("/api/manager/removeDrink/{billInfoId}/{isLastItem}")
+    Call<ResponseBody> delete(@Path("billInfoId") int BillInfoId, @Path("isLastItem") boolean isLastItem);
 }

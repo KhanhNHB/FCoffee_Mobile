@@ -25,9 +25,10 @@ public class TableFragment extends Fragment implements TableView, View.OnLongCli
     private TableAdapter mTableAdapter;
     private TableData mTables;
     private TablePresenter mTablePresenter;
+    private static TableFragment fragment;
 
     public static TableFragment newInstance() {
-        TableFragment fragment = new TableFragment();
+        fragment = new TableFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -85,7 +86,7 @@ public class TableFragment extends Fragment implements TableView, View.OnLongCli
 
     private void updateRcv() {
         if (mTableAdapter == null) {
-            mTableAdapter = new TableAdapter(getContext(), mTables);
+            mTableAdapter = new TableAdapter(getContext(), mTables, fragment);
             mRecyclerView.setAdapter(mTableAdapter);
         } else {
             mTableAdapter.updateTableDetailData(mTables);

@@ -76,6 +76,10 @@ public class DTOTableDetail implements Serializable {
         return totalPrice;
     }
 
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     public float getDiscount() {
         return discount;
     }
