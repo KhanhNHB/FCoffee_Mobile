@@ -1,11 +1,13 @@
 package com.example.fcoffee.modules.dink.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fcoffee.R;
 import com.example.fcoffee.modules.dink.adapter.DrinkAdapter;
-import com.example.fcoffee.modules.dink.model.DTO.Drinks;
+import com.example.fcoffee.modules.dink.model.DTO.Drink;
 import com.example.fcoffee.modules.dink.model.DTOrequest.RequestBodyDrink;
 import com.example.fcoffee.modules.dink.model.DTOresponse.DrinkDTO;
 import com.example.fcoffee.modules.dink.model.DTOresponse.DrinkData;
@@ -24,7 +26,7 @@ import com.example.fcoffee.modules.dink.view.DrinkView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DrinkActivity extends AppCompatActivity implements DrinkView {
+public class DrinkActivity extends AppCompatActivity implements DrinkView, AdapterView.OnItemSelectedListener {
 
     private DrinkPresenter mDrinkPresenter;
     private DrinkData mDrinks;
@@ -33,11 +35,11 @@ public class DrinkActivity extends AppCompatActivity implements DrinkView {
     private ImageView btn_back;
     private Button btn_check_in;
     private int tableNumber;
-    private boolean flag = false;
+    private Spinner mSpinner;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_drink);
 
         initView();
@@ -47,22 +49,25 @@ public class DrinkActivity extends AppCompatActivity implements DrinkView {
     private void initView() {
         btn_back = findViewById(R.id.btn_back);
         btn_check_in = findViewById(R.id.btn_check_in);
+        mSpinner = findViewById(R.id.catgories_spinner);
 
         mRecycleDrink = findViewById(R.id.rcv_drinks);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1);
         mRecycleDrink.setLayoutManager(gridLayoutManager);
-
     }
 
     private void initData() {
-        mDrinkPresenter = new DrinkPresenter(this);
-        mDrinkPresenter.GetAll();
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.category_array, android.R.layout.simple_list_item_activated_1);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        mSpinner.setAdapter(adapter);
+        mSpinner.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -73,8 +78,19 @@ public class DrinkActivity extends AppCompatActivity implements DrinkView {
     @Override
     public void onDrinkSuccessGetAll(DrinkData drinks) {
         if (drinks != null) {
+            mDrinks = new DrinkData();
             mDrinks = drinks;
             updateRcv();
+        }
+    }
+
+    @Override
+    public void onDrinkSuccessGetByCategoryId(DrinkData drinks) {
+        if (drinks != null) {
+            mDrinks = new DrinkData();
+            mDrinks = drinks;
+            updateRcv();
+
         }
     }
 
@@ -90,12 +106,8 @@ public class DrinkActivity extends AppCompatActivity implements DrinkView {
     }
 
     private void updateRcv() {
-        if (mDrinkAdapter == null) {
-            mDrinkAdapter = new DrinkAdapter(this, mDrinks);
-            mRecycleDrink.setAdapter(mDrinkAdapter);
-        } else {
-            mDrinkAdapter.notifyDataSetChanged();
-        }
+        mDrinkAdapter = new DrinkAdapter(this, mDrinks);
+        mRecycleDrink.setAdapter(mDrinkAdapter);
     }
 
     public void clickToCheckIn(View view) {
@@ -104,11 +116,11 @@ public class DrinkActivity extends AppCompatActivity implements DrinkView {
             return;
         }
 
-        List<Drinks> listDrink = new ArrayList<>();
+        List<Drink> listDrink = new ArrayList<>();
         for (int i = 0; i < mDrinks.getmDrink().size(); i++) {
             int count = mDrinks.getmDrink().get(i).getCount();
             if (count > 0) {
-                listDrink.add(new Drinks(count, mDrinks.getmDrink().get(i).getId()));
+                listDrink.add(new Drink(count, mDrinks.getmDrink().get(i).getId()));
             }
         }
 
@@ -126,5 +138,21 @@ public class DrinkActivity extends AppCompatActivity implements DrinkView {
         requestBodyDrink.setListDrink(listDrink);
         requestBodyDrink.setTableNumber(tableNumber);
         mDrinkPresenter.AddDrinkForTable(requestBodyDrink);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (position == 0) {
+            mDrinkPresenter = new DrinkPresenter(this);
+            mDrinkPresenter.GetAll();
+        } else {
+            mDrinkPresenter = new DrinkPresenter(this);
+            mDrinkPresenter.GetByCategoryId(position);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

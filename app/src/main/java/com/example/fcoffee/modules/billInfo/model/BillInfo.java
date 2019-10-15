@@ -81,6 +81,10 @@ public class BillInfo implements Serializable {
         return subPrice;
     }
 
+    public void setSubPrice(float subPrice) {
+        this.subPrice = subPrice;
+    }
+
     public String getImage() {
         return image;
     }

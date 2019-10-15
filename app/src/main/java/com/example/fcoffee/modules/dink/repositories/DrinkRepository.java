@@ -29,17 +29,36 @@ public class DrinkRepository {
             @Override
             public void onResponse(Call<DrinkDTO> call, Response<DrinkDTO> response) {
                 if (response.code() == 200) {
-                    DrinkDTO drink = new DrinkDTO();
-                    drink = response.body();
+                    DrinkDTO drink = response.body();
                     drinkView.onDinkSuccessGetById(drink);
                 } else {
-
+                    drinkView.onDrinkFail(response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<DrinkDTO> call, Throwable t) {
+                drinkView.onDrinkFail(t.getMessage());
+            }
+        });
+    }
 
+    public void getByCategoryId(final int categoryId, final DrinkView drinkView) {
+        Call<DrinkData> call = mDrinkService.getDrinkByCategoryId(categoryId);
+        call.enqueue(new Callback<DrinkData>() {
+            @Override
+            public void onResponse(Call<DrinkData> call, Response<DrinkData> response) {
+                if (response.code() == 200) {
+                    DrinkData drinks = response.body();
+                    drinkView.onDrinkSuccessGetByCategoryId(drinks);
+                } else {
+                    drinkView.onDrinkFail(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DrinkData> call, Throwable t) {
+                drinkView.onDrinkFail(t.getMessage());
             }
         });
     }
@@ -50,8 +69,7 @@ public class DrinkRepository {
             @Override
             public void onResponse(Call<DrinkData> call, Response<DrinkData> response) {
                 if (response.code() == 200) {
-                    DrinkData drinks = new DrinkData();
-                    drinks = response.body();
+                    DrinkData drinks = response.body();
                     drinkView.onDrinkSuccessGetAll(drinks);
                 } else {
                     drinkView.onDrinkFail(response.message());
@@ -66,13 +84,12 @@ public class DrinkRepository {
     }
 
     public void AddDrinkForTable(RequestBodyDrink requestBodyDrinks, final DrinkView drinkView) {
-
         try {
             Call<ResponseBody> call = mManagementService.addDrinkForTable(requestBodyDrinks);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.code() == 200) {
+                        if (response.code() == 200) {
                         drinkView.onDrinkSuccessCheckIn();
                     } else {
                         drinkView.onDrinkFail(Error.TAG_SYSTEM_BUSY);

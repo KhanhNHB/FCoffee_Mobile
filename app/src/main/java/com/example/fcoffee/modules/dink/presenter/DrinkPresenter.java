@@ -18,6 +18,10 @@ public class DrinkPresenter {
         mDrinkRepository.getById(drinkId, mDrinkView);
     }
 
+    public void GetByCategoryId(int categoryId) {
+        mDrinkRepository.getByCategoryId(categoryId, mDrinkView);
+    }
+
     public void GetAll() {
         mDrinkRepository.getAll(mDrinkView);
     }

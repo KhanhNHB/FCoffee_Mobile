@@ -20,19 +20,15 @@ import com.example.fcoffee.modules.table.model.DTOresponse.TableDetailData;
 import com.example.fcoffee.utils.FormatMoney;
 import com.squareup.picasso.Picasso;
 
-import java.util.StringTokenizer;
-
 public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.ViewHolder> {
     private Context mContext;
     private TableDetailData mTableDetailData;
     private TextView mTotalPrice;
-    private Float tempPrice;
 
-    public TableDetailAdapter(Context context, TableDetailData tableDetail, TextView totalPrice, float price) {
+    public TableDetailAdapter(Context context, TableDetailData tableDetail, TextView totalPrice) {
         mContext = context;
         mTableDetailData = tableDetail;
         mTotalPrice = totalPrice;
-        tempPrice = price;
     }
 
     public void updateTableDetailData(TableDetailData data){
@@ -56,7 +52,8 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
         initData(holder, position);
 
         final int count = mTableDetailData.getTableDetail().getListBillInfos().get(position).getCount();
-        final String currentPrice = String.valueOf(mTableDetailData.getTableDetail().getListBillInfos().get(position).getSubPrice() / count);
+        final String unitPrice = String.valueOf(mTableDetailData.getTableDetail().getListBillInfos().get(position).getSubPrice() / count);
+
 
         holder.mImgBtnRemoveProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,12 +65,15 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
         holder.mBtnAddQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String currentQuantity = holder.mTxtProductQuantity.getText().toString();
-                int parseQuantity = Integer.parseInt(currentQuantity);
-                parseQuantity = parseQuantity + 1;
-                setCurrentPrice(holder, currentPrice, parseQuantity, false);
+                String currentQuantityItem = holder.mTxtProductQuantity.getText().toString();
+                int parseCurrentQuantityItem = Integer.parseInt(currentQuantityItem);
+                float discount = mTableDetailData.getTableDetail().getDiscount();
 
-                mTableDetailData.getTableDetail().getListBillInfos().get(position).setCount(parseQuantity);
+                parseCurrentQuantityItem = parseCurrentQuantityItem + 1;
+
+                setCurrentPrice(holder, unitPrice, parseCurrentQuantityItem, false, discount, position);
+
+                mTableDetailData.getTableDetail().getListBillInfos().get(position).setCount(parseCurrentQuantityItem);
                 holder.mManagementRepository.addCount(mTableDetailData.getTableDetail().getListBillInfos().get(position).getBillInfoId(), holder);
             }
         });
@@ -81,42 +81,43 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
         holder.mBtnRemoveQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String currentQuantity = holder.mTxtProductQuantity.getText().toString();
+                String currentQuantityItem = holder.mTxtProductQuantity.getText().toString();
+                int parseCurrentQuantityItem = Integer.parseInt(currentQuantityItem);
+                float discount = mTableDetailData.getTableDetail().getDiscount();
 
-                int parseQuantity = Integer.parseInt(currentQuantity);
+                if (parseCurrentQuantityItem > 1) {
+                    parseCurrentQuantityItem = parseCurrentQuantityItem - 1;
 
-                if (parseQuantity > 1) {
-                    parseQuantity = parseQuantity - 1;
-
-                    setCurrentPrice(holder, currentPrice, parseQuantity, true);
-                    mTableDetailData.getTableDetail().getListBillInfos().get(position).setCount(parseQuantity);
+                    setCurrentPrice(holder, unitPrice, parseCurrentQuantityItem, true, discount, position);
+                    mTableDetailData.getTableDetail().getListBillInfos().get(position).setCount(parseCurrentQuantityItem);
                     holder.mManagementRepository.subCount(mTableDetailData.getTableDetail().getListBillInfos().get(position).getBillInfoId(), holder);
                 }
             }
         });
     }
 
-    private void setCurrentPrice(final ViewHolder holder, String currentPrice, final int currentQuantity, boolean isSubstraction) {
-        StringTokenizer stk = new StringTokenizer(currentPrice);
-        String price = stk.nextToken(" ");
+    private void setCurrentPrice(final ViewHolder holder, String unitPrice, final int currentQuantityItem, boolean isSubstraction, final float discount, final int position) {
+        float originalPrice = Float.parseFloat(unitPrice);
+        float newPrice = originalPrice * currentQuantityItem;
 
-        float originalPrice = Float.parseFloat(price);
-        float calculatePrice = originalPrice * currentQuantity;
-
-        if (isSubstraction) {
-            tempPrice -= originalPrice;
-        } else {
-            tempPrice += originalPrice;
+        float percent = 0;
+        if (discount > 0) {
+            percent = discount / 100;
         }
 
-        String formatCalculatePrice = FormatMoney.formatVND(calculatePrice);
-        holder.mTxtProductQuantity.setText(String.valueOf(currentQuantity));
-        holder.mTxtProductPrice.setText(formatCalculatePrice);
+        holder.mTxtProductQuantity.setText(String.valueOf(currentQuantityItem));
+        holder.mTxtProductPrice.setText(FormatMoney.formatVND(newPrice));
 
-        String formatTotalPrice = FormatMoney.formatVND(tempPrice);
+        float discoutPriceItem = originalPrice * (1 - percent);
+        if (isSubstraction) {
+            discoutPriceItem = mTableDetailData.getTableDetail().getTotalPrice() - discoutPriceItem;
+        } else {
+            discoutPriceItem = mTableDetailData.getTableDetail().getTotalPrice() + discoutPriceItem;
+        }
 
-        formatTotalPrice = formatTotalPrice.replace(",", ".");
-        mTotalPrice.setText(formatTotalPrice);
+        mTableDetailData.getTableDetail().getListBillInfos().get(position).setSubPrice(Float.parseFloat(unitPrice));
+        mTableDetailData.getTableDetail().setTotalPrice(discoutPriceItem);
+        mTotalPrice.setText(FormatMoney.formatVND(discoutPriceItem));
     }
 
     private void initData(ViewHolder holder, int position) {
@@ -180,11 +181,27 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
                     })
                     .setNegativeButton("Có", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            mManagementRepository.delete(mTableDetailData.getTableDetail().getListBillInfos().get(position).getBillInfoId(), holder);
+                            boolean isLastItem = mTableDetailData.getTableDetail().getListBillInfos().size() > 0 ? true : false;
+                            mManagementRepository.delete(mTableDetailData.getTableDetail().getListBillInfos().get(position).getBillInfoId(), isLastItem, holder);
+
+                            float percent = 0;
+                            float discount = mTableDetailData.getTableDetail().getDiscount();
+                            if (discount > 0) {
+                                percent = discount / 100;
+                            }
+
+                            int count = mTableDetailData.getTableDetail().getListBillInfos().get(position).getCount();
+                            String unitPrice = String.valueOf(mTableDetailData.getTableDetail().getListBillInfos().get(position).getSubPrice() / count);
+
+                            float discoutPriceItem = Float.parseFloat(unitPrice) * (1 - percent);
+                            float newTotalPriceBill = mTableDetailData.getTableDetail().getTotalPrice() - (discoutPriceItem * count);
+
+                            mTableDetailData.getTableDetail().setTotalPrice(newTotalPriceBill);
+
+                            mTotalPrice.setText(FormatMoney.formatVND(newTotalPriceBill));
                             mTableDetailData.getTableDetail().getListBillInfos().remove(position);
+
                             notifyDataSetChanged();
-                            Toast.makeText(mContext, "Đã xóa",
-                                    Toast.LENGTH_SHORT).show();
                         }
                     });
             AlertDialog alert = builder.create();
@@ -196,7 +213,17 @@ public class TableDetailAdapter extends RecyclerView.Adapter<TableDetailAdapter.
 
         @Override
         public void onDrinkSuccess() {
-            Toast.makeText(mContext, "Đã thêm thành công", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Thao tác thành công", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCheckoutSuccess() {
+
+        }
+
+        @Override
+        public void onRemoveDrinkSuccess() {
+            Toast.makeText(mContext, "Xóa thành công", Toast.LENGTH_SHORT).show();
         }
 
         @Override

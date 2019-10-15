@@ -11,18 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fcoffee.R;
-import com.example.fcoffee.common.Money;
 import com.example.fcoffee.modules.dink.model.DTOresponse.DrinkData;
+import com.example.fcoffee.utils.FormatMoney;
 import com.squareup.picasso.Picasso;
-
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.StringTokenizer;
 
 public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.ViewHolder> {
     private Context mContext;
     private DrinkData mDrinks;
-
     public DrinkAdapter(Context context, DrinkData drinks) {
         mContext = context;
         mDrinks = drinks;
@@ -43,15 +38,15 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.ViewHolder> 
         holder.mBtnAddQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String currentPrice = String.valueOf(mDrinks.getmDrink().get(position).getPrice());
+                float currentPrice = mDrinks.getmDrink().get(position).getPrice();
                 int currentQuantity = Integer.parseInt(holder.mTxtProductQuantity.getText().toString());
 
                 currentQuantity = currentQuantity + 1;
 
                 if (currentQuantity == 1) {
-                    setCurrentPrice(holder, currentPrice, 1);
+                    setCurrentPrice(holder, currentPrice, 1, position);
                 } else {
-                    setCurrentPrice(holder, currentPrice, currentQuantity);
+                    setCurrentPrice(holder, currentPrice, currentQuantity, position);
                 }
 
                 mDrinks.getmDrink().get(position).setCount(currentQuantity);
@@ -61,12 +56,12 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.ViewHolder> 
         holder.mBtnRemoveQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String currentPrice = String.valueOf(mDrinks.getmDrink().get(position).getPrice());
+                float currentPrice = mDrinks.getmDrink().get(position).getPrice();
                 int currentQuantity = Integer.parseInt(holder.mTxtProductQuantity.getText().toString());
 
                 if (currentQuantity > 0) {
                     currentQuantity = currentQuantity - 1;
-                    setCurrentPrice(holder, currentPrice, currentQuantity);
+                    setCurrentPrice(holder, currentPrice, currentQuantity, position);
                 }
 
                 mDrinks.getmDrink().get(position).setCount(currentQuantity);
@@ -74,15 +69,9 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.ViewHolder> 
         });
     }
 
-    private void setCurrentPrice(final ViewHolder holder, String currentPrice, final int currentQuantity) {
-        StringTokenizer stk = new StringTokenizer(currentPrice);
-        String price = stk.nextToken(" ");
-
-        NumberFormat formater = new DecimalFormat("#,###");
-        String formatterPrice = formater.format(Float.parseFloat(price) * currentQuantity) + Money.VND;
-
+    private void setCurrentPrice(ViewHolder holder, float currentPrice, int currentQuantity, int position) {
         holder.mTxtProductQuantity.setText(String.valueOf(currentQuantity));
-        holder.mTxtProductPrice.setText(formatterPrice);
+        holder.mTxtProductPrice.setText(FormatMoney.formatVND(currentPrice  * currentQuantity));
     }
 
     private void initData(ViewHolder holder, int position) {
@@ -93,7 +82,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.ViewHolder> 
                 .into(holder.mImgProduct);
 
         holder.mTxtProductName.setText(mDrinks.getmDrink().get(position).getName());
-        holder.mTxtProductPrice.setText("0" + Money.VND);
+        holder.mTxtProductPrice.setText(FormatMoney.formatVND(0));
         holder.mTxtProductQuantity.setText("0");
     }
 

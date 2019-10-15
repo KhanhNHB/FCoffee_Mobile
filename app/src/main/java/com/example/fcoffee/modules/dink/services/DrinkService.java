@@ -14,4 +14,8 @@ public interface DrinkService {
 
     @GET("/api/drink")
     Call<DrinkData> getDrinks();
+
+    @GET("/api/drink/category/{categoryId}")
+    Call<DrinkData> getDrinkByCategoryId(@Path("categoryId") int categoryId);
+
 }
