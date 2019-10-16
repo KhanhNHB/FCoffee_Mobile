@@ -25,11 +25,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9.3"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="10">
         <TextView
             android:id="@+id/txtResultsHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0.8"
             android:layout_centerHorizontal="true"
             android:text="Mã giảm giá: "
             android:textSize="25sp"
@@ -39,25 +41,42 @@
             android:id="@+id/txtResultsBody"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:gravity="center" />
+            android:layout_weight="9"
+            android:gravity="center"
+            />
 
         <Button
             android:id="@+id/btnOpenCamera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mở máy ảnh" />
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50"
+            android:layout_marginRight="@dimen/dp5"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginBottom="@dimen/dp5"
+            android:text="Mở máy ảnh"
+            android:background="@drawable/custom_button_next_step"/>
 
         <Button
             android:id="@+id/btnVerify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Xác nhận" />
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50"
+            android:layout_marginRight="@dimen/dp5"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginBottom="@dimen/dp5"
+            android:text="Xác nhận"
+            android:background="@drawable/custom_button_next_step"/>
 
         <Button
             android:id="@+id/btnCanncel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hủy" />
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50"
+            android:layout_marginRight="@dimen/dp5"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginBottom="@dimen/dp5"
+            android:text="Hủy"
+            android:background="@drawable/custom_button_next_step"/>
     </LinearLayout>
 
 
