@@ -18,11 +18,15 @@ import com.example.fcoffee.modules.account.repositories.LoginRepository;
 import com.example.fcoffee.modules.table.adapter.FragmentTableAdapter;
 
 public class TableActivity extends AppCompatActivity implements View.OnClickListener {
+    public interface OnReload{
+        void reload();
+    }
     private FragmentTableAdapter mFragmentTableAdapter;
     private ViewPager mViewPager;
     private LinearLayout mLLTable, mLLStatistics, mLLAccount, mLLLogout;
     private TextView mTxtTable, mTxtStatistics, mTxtAccount, mTxtLogout;
     private ImageView mImgTable, mImgStatistics, mImgAccount, mImgLogout;
+    public static OnReload mOnReload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,6 +162,7 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.ll_button_statistics:
                 setPageStatistics();
+                mOnReload.reload();
                 mViewPager.setCurrentItem(1);
                 break;
             case R.id.ll_button_account:
