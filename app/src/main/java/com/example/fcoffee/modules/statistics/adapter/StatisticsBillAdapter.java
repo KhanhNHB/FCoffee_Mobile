@@ -35,6 +35,12 @@ public class StatisticsBillAdapter extends RecyclerView.Adapter<StatisticsBillAd
         this.mContext = mContext;
     }
 
+    public void updateList(DTOBillList billList){
+        mBill = new DTOBillList();
+        mBill = billList;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

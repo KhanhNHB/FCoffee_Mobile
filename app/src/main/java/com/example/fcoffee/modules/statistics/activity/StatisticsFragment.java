@@ -16,6 +16,7 @@ import com.example.fcoffee.modules.bill.model.DTOresponse.DTOBillList;
 import com.example.fcoffee.modules.bill.presenter.BillPresenter;
 import com.example.fcoffee.modules.bill.view.BillView;
 import com.example.fcoffee.modules.statistics.adapter.StatisticsBillAdapter;
+import com.example.fcoffee.modules.table.activity.TableActivity;
 
 
 public class StatisticsFragment extends Fragment implements BillView {
@@ -31,6 +32,17 @@ public class StatisticsFragment extends Fragment implements BillView {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        TableActivity.mOnReload = new TableActivity.OnReload() {
+            @Override
+            public void reload() {
+                mBillPresenter.getAllBillByToken(StatisticsFragment.this);
+            }
+        } ;
     }
 
     @Override
@@ -71,7 +83,7 @@ public class StatisticsFragment extends Fragment implements BillView {
             mStatisticsBillAdapter = new StatisticsBillAdapter(getContext(), mBills);
             mRecyclerView.setAdapter(mStatisticsBillAdapter);
         }else{
-            mStatisticsBillAdapter.notifyDataSetChanged();
+            mStatisticsBillAdapter.updateList(mBills);
         }
     }
 
