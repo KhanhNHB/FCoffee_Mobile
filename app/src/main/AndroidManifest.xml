@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.fcoffee">
+    package="com.group3.fcoffee">
 
     <meta-data
         android:name="com.google.android.gms.vision.DEPENDENCIES"
@@ -23,18 +23,18 @@
         android:roundIcon="@drawable/ic_icon_app"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".modules.table.activity.PictureBarcodeActivity"></activity>
-        <activity android:name=".modules.billInfo.activity.BillInfoActivity" />
-        <activity android:name=".modules.account.activities.LoginActivity">
+        <activity android:name="com.group3.fcoffee.modules.table.activity.PictureBarcodeActivity"></activity>
+        <activity android:name="com.group3.fcoffee.modules.billInfo.activity.BillInfoActivity" />
+        <activity android:name="com.group3.fcoffee.modules.account.activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".modules.table.activity.TableActivity"></activity>
-        <activity android:name=".modules.table.activity.TableDetailActivity"></activity>
-        <activity android:name=".modules.dink.activity.DrinkActivity" />
+        <activity android:name="com.group3.fcoffee.modules.table.activity.TableActivity"></activity>
+        <activity android:name="com.group3.fcoffee.modules.table.activity.TableDetailActivity"></activity>
+        <activity android:name="com.group3.fcoffee.modules.dink.activity.DrinkActivity" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
