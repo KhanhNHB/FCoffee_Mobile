@@ -21,4 +21,8 @@ public class DrinkData {
     public List<DTODrink> getmDrink() {
         return mDrink;
     }
+
+    public void setmDrink(List<DTODrink> mDrink) {
+        this.mDrink = mDrink;
+    }
 }

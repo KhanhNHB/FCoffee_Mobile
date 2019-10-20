@@ -14,7 +14,6 @@ import retrofit2.Response;
 
 public class AccountRepository {
     private AccountService mAccountService;
-
     public AccountRepository() {
         mAccountService = APIUtils.getAccountService();
     }
@@ -24,14 +23,19 @@ public class AccountRepository {
     }
 
     public void getInfo(final AccountView accountView) {
-        try {
+
             Call<DTOAccountResponse> call = mAccountService.getInfo();
             call.enqueue(new Callback<DTOAccountResponse>() {
                 @Override
                 public void onResponse(Call<DTOAccountResponse> call, Response<DTOAccountResponse> response) {
                     if (response.code() == 200) {
-                        DTOAccountResponse account = response.body();
-                        accountView.onAccountSuccess(account);
+                        try {
+                            DTOAccountResponse account = response.body();
+                            accountView.onAccountSuccess(account);
+                        } catch (Exception ex) {
+                            accountView.onAccountFail(Error.TAG_SYSTEM_BUSY);
+                            Log.d(Error.TAG_ERROR_RESPONSE, ex.getMessage());
+                        }
                     } else {
                         accountView.onAccountFail(Error.TAG_SYSTEM_BUSY);
                         Log.d(Error.TAG_ERROR_RESPONSE, response.message());
@@ -44,9 +48,5 @@ public class AccountRepository {
                     Log.d(Error.TAG_ERROR_RESPONSE, t.getMessage());
                 }
             });
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
     }
 }

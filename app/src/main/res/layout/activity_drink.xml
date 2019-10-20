@@ -23,43 +23,22 @@
             android:layout_weight="1.0"
             android:src="@drawable/ic_keyboard_backspace_black_24dp" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/dp10"
-            android:layout_weight="8.0"
-            android:background="@drawable/custom_form_search"
-            android:orientation="horizontal"
-            android:weightSum="10">
-
-            <EditText
-                android:id="@+id/txt_search"
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="9.0"
-                android:background="@null"
-                android:hint="Tìm sản phẩm, thể loại hay giá tiền mong muốn"
-                android:padding="@dimen/dp10"
-                android:textSize="10sp" />
-
-            <ImageView
-                android:id="@+id/btn_search"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.0"
-                android:background="@drawable/custom_form_search"
-                android:src="@drawable/ic_search" />
-
-        </LinearLayout>
+                android:layout_weight="8.0"
+                android:text="Danh sách sản phẩm"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="@dimen/dp20"/>
 
         <ImageView
             android:id="@+id/btn_add_drink"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/dp8"
-            android:layout_weight="1.0"
-            android:src="@drawable/ic_notifications" />
+            android:layout_weight="1.0" />
     </LinearLayout>
 
     <LinearLayout
@@ -68,11 +47,6 @@
         android:layout_weight="0.5"
         android:orientation="horizontal">
 
-        <Spinner
-            android:id="@+id/catgories_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"/>
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView

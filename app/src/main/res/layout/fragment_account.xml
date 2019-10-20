@@ -197,19 +197,9 @@
                     android:layout_marginTop="@dimen/dp10"
                     android:layout_marginBottom="@dimen/dp10"
                     android:drawableLeft="@mipmap/ic_lock"
-                    android:drawablePadding="@dimen/dp10" />
+                    android:drawablePadding="@dimen/dp10"
+                    android:text="12345678"/>
 
-                <Button
-                    android:id="@+id/btn_update_account"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/dp10"
-                    android:layout_marginBottom="@dimen/dp10"
-                    android:background="@drawable/custom_button_next_step"
-                    android:text="Cập nhật"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/dp14" />
             </LinearLayout>
         </LinearLayout>
 

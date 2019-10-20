@@ -1,4 +1,4 @@
-package com.group3.fcoffee.modules.category.model;
+package com.group3.fcoffee.modules.category.model.models;
 
 import java.io.Serializable;
 

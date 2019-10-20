@@ -1,5 +1,7 @@
 package com.group3.fcoffee.modules.dink.repositories;
 
+import android.util.Log;
+
 import com.group3.fcoffee.common.Error;
 import com.group3.fcoffee.modules.dink.model.DTOrequest.RequestBodyDrink;
 import com.group3.fcoffee.modules.dink.model.DTOresponse.DrinkDTO;
@@ -29,16 +31,23 @@ public class DrinkRepository {
             @Override
             public void onResponse(Call<DrinkDTO> call, Response<DrinkDTO> response) {
                 if (response.code() == 200) {
-                    DrinkDTO drink = response.body();
-                    drinkView.onDinkSuccessGetById(drink);
+                    try {
+                        DrinkDTO drink = response.body();
+                        drinkView.onDinkSuccessGetById(drink);
+                    } catch (Exception ex) {
+                        drinkView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                        Log.d(Error.TAG_ERROR_RESPONSE, ex.getMessage());
+                    }
                 } else {
-                    drinkView.onDrinkFail(response.message());
+                    drinkView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                    Log.d(Error.TAG_ERROR_RESPONSE, response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<DrinkDTO> call, Throwable t) {
                 drinkView.onDrinkFail(t.getMessage());
+                Log.d(Error.TAG_ERROR_RESPONSE, t.getMessage());
             }
         });
     }
@@ -49,16 +58,23 @@ public class DrinkRepository {
             @Override
             public void onResponse(Call<DrinkData> call, Response<DrinkData> response) {
                 if (response.code() == 200) {
-                    DrinkData drinks = response.body();
-                    drinkView.onDrinkSuccessGetByCategoryId(drinks);
+                    try {
+                        DrinkData drinks = response.body();
+                        drinkView.onDrinkSuccessGetByCategoryId(drinks);
+                    } catch (Exception ex) {
+                        drinkView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                        Log.d(Error.TAG_ERROR_RESPONSE, ex.getMessage());
+                    }
                 } else {
-                    drinkView.onDrinkFail(response.message());
+                    drinkView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                    Log.d(Error.TAG_ERROR_RESPONSE, response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<DrinkData> call, Throwable t) {
                 drinkView.onDrinkFail(t.getMessage());
+                Log.d(Error.TAG_ERROR_RESPONSE, t.getMessage());
             }
         });
     }
@@ -69,40 +85,50 @@ public class DrinkRepository {
             @Override
             public void onResponse(Call<DrinkData> call, Response<DrinkData> response) {
                 if (response.code() == 200) {
-                    DrinkData drinks = response.body();
-                    drinkView.onDrinkSuccessGetAll(drinks);
+                    try {
+                        DrinkData drinks = response.body();
+                        drinkView.onDrinkSuccessGetAll(drinks);
+                    } catch (Exception ex) {
+                        drinkView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                        Log.d(Error.TAG_ERROR_RESPONSE, ex.getMessage());
+                    }
                 } else {
-                    drinkView.onDrinkFail(response.message());
+                    drinkView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                    Log.d(Error.TAG_ERROR_RESPONSE, response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<DrinkData> call, Throwable t) {
                 drinkView.onDrinkFail(t.getMessage());
+                Log.d(Error.TAG_ERROR_RESPONSE, t.getMessage());
             }
         });
     }
 
     public void AddDrinkForTable(RequestBodyDrink requestBodyDrinks, final DrinkView drinkView) {
-        try {
             Call<ResponseBody> call = mManagementService.addDrinkForTable(requestBodyDrinks);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.code() == 200) {
-                        drinkView.onDrinkSuccessCheckIn();
+                    if (response.code() == 200) {
+                        try {
+                            drinkView.onDrinkSuccessCheckIn();
+                        } catch (Exception ex) {
+                            drinkView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                            Log.d(Error.TAG_ERROR_RESPONSE, ex.getMessage());
+                        }
                     } else {
                         drinkView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                        Log.d(Error.TAG_ERROR_RESPONSE, response.message());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    drinkView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                    drinkView.onDrinkFail(t.getMessage());
+                    Log.d(Error.TAG_ERROR_RESPONSE, t.getMessage());
                 }
             });
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 }

@@ -32,8 +32,13 @@ public class TableRepository {
             @Override
             public void onResponse(Call<TableData> call, Response<TableData> response) {
                 if (response.code() == 200) {
-                    TableData dto = response.body();
-                    tableView.onTableSuccessGetAll(dto);
+                    try {
+                        TableData dto = response.body();
+                        tableView.onTableSuccessGetAll(dto);
+                    } catch (Exception ex) {
+                        tableView.onTableFail(Error.TAG_SYSTEM_BUSY);
+                        Log.d(Error.TAG_ERROR_RESPONSE, response.message());
+                    }
                 } else {
                     tableView.onTableFail(Error.TAG_SYSTEM_BUSY);
                     Log.d(Error.TAG_ERROR_RESPONSE, response.message());
@@ -54,18 +59,23 @@ public class TableRepository {
             @Override
             public void onResponse(Call<TableDetailData> call, Response<TableDetailData> response) {
                 if (response.code() == 200) {
-                    TableDetailData tableDetail;
-
-                    tableDetail = response.body();
-                    tableView.onTableSuccessGetByNumber(tableDetail);
+                    try {
+                        TableDetailData tableDetail;
+                        tableDetail = response.body();
+                        tableView.onTableSuccessGetByNumber(tableDetail);
+                    } catch (Exception ex) {
+                        tableView.onTableFail(Error.TAG_SYSTEM_BUSY);
+                        Log.d(Error.TAG_ERROR_RESPONSE, ex.getMessage());
+                    }
                 } else {
-                    tableView.onTableFail("Bàn trống");
+                    Log.d(Error.TAG_ERROR_RESPONSE, response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<TableDetailData> call, Throwable t) {
                 tableView.onTableFail(Error.TAG_ERROR_REQUEST + t.getMessage());
+                Log.d(Error.TAG_ERROR_RESPONSE, t.getMessage());
             }
         });
     }
