@@ -14,88 +14,74 @@ import retrofit2.Response;
 
 public class ManagementRepository {
     private ManagementService mManagementService;
-
     public ManagementRepository() {
         mManagementService = APIUtils.getManagerService();
     }
 
     public void addCount(int billInfoId, final ManagementView managementView) {
-        try {
             Call<ResponseBody> call = mManagementService.addCount(billInfoId);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.code() == 200) {
-                        managementView.onDrinkSuccess();
+                        try {
+                            managementView.onDrinkSuccess();
+                        } catch (Exception ex) {
+                            managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                            Log.d(Error.TAG_ERROR_RESPONSE, ex.getMessage());
+                        }
                     } else {
-                        managementView.onDrinkFail(Error.TAG_ERROR_RESPONSE + "Thêm thất bại");
+                        managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                        Log.d(Error.TAG_ERROR_RESPONSE, response.message());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    managementView.onDrinkFail(Error.TAG_ERROR_RESPONSE + t.getMessage());
+                    managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                    Log.d(Error.TAG_ERROR_RESPONSE, t.getMessage());
                 }
             });
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     public void subCount(int billInfoId, final ManagementView managementView) {
-        try {
-            Call<ResponseBody> call = mManagementService.subCount(billInfoId);
+        Call<ResponseBody> call = mManagementService.subCount(billInfoId);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.code() == 200) {
-                        managementView.onDrinkSuccess();
+                        try {
+                            managementView.onDrinkSuccess();
+                        } catch (Exception ex) {
+                            managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                            Log.d(Error.TAG_ERROR_RESPONSE, response.message());
+                        }
                     } else {
-                        managementView.onDrinkFail(Error.TAG_ERROR_RESPONSE + "Xóa số lượng thất bại");
+                        managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                        Log.d(Error.TAG_ERROR_RESPONSE, response.message());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    managementView.onDrinkFail(Error.TAG_ERROR_RESPONSE + t.getMessage());
+                    managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                    Log.d(Error.TAG_ERROR_RESPONSE, t.getMessage());
                 }
             });
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     public void delete(int billInfoId, boolean isLastItem, final ManagementView managementView) {
-        try {
             Call<ResponseBody> call = mManagementService.delete(billInfoId, isLastItem);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.code() == 200) {
-                        managementView.onRemoveDrinkSuccess();
-                    } else {
-                        managementView.onDrinkFail(Error.TAG_ERROR_RESPONSE + "Xóa thất bại");
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    managementView.onDrinkFail(Error.TAG_ERROR_RESPONSE + t.getMessage());
-                }
-            });
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void payment(int billId, final ManagementView managementView) {
-        try {
-            Call<ResponseBody> call = mManagementService.payment(billId);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.code() == 200) {
-                        managementView.onCheckoutSuccess();
+                        try {
+                            managementView.onRemoveDrinkSuccess();
+                        } catch (Exception ex) {
+                            managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                            Log.d(Error.TAG_ERROR_RESPONSE, response.message());
+                        }
                     } else {
                         managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
                     }
@@ -104,34 +90,61 @@ public class ManagementRepository {
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                    Log.d(Error.TAG_ERROR_RESPONSE, t.getMessage());
                 }
             });
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
-    public void addDiscount(int billId, float discount, final ManagementView managementView){
-        try {
-            Call<ResponseBody> call = mManagementService.addDiscount(billId, discount);
+    public void payment(int billId, final ManagementView managementView) {
+        Call<ResponseBody> call = mManagementService.payment(billId);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.code() == 200) {
-                        managementView.onDiscountSuccess();
+                        try {
+                            managementView.onCheckoutSuccess();
+                        } catch (Exception ex) {
+                            managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                            Log.d(Error.TAG_ERROR_RESPONSE, response.message());
+                        }
                     } else {
-                        managementView.onDiscountFail(Error.TAG_SYSTEM_BUSY);
+                        managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                        Log.d(Error.TAG_ERROR_RESPONSE, response.message());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    managementView.onDiscountFail(Error.TAG_SYSTEM_BUSY);
+                    managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                    Log.d(Error.TAG_ERROR_RESPONSE, t.getMessage());
                 }
             });
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    }
+
+    public void addDiscount(int billId, float discount, final ManagementView managementView){
+        Call<ResponseBody> call = mManagementService.addDiscount(billId, discount);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.code() == 200) {
+                        try {
+                            managementView.onDiscountSuccess();
+                        } catch (Exception ex) {
+                            managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                            Log.d(Error.TAG_ERROR_RESPONSE, response.message());
+                        }
+                    } else {
+                        managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                        Log.d(Error.TAG_ERROR_RESPONSE, response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                    Log.d(Error.TAG_ERROR_RESPONSE, t.getMessage());
+                }
+            });
     }
 
     public void switchTable(int fromNumberTable, int toNumberTable, final ManagementView managementView) {
@@ -140,7 +153,12 @@ public class ManagementRepository {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() == 200) {
-                    managementView.onDrinkSuccess();
+                    try {
+                        managementView.onDrinkSuccess();
+                    } catch (Exception ex) {
+                        managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
+                        Log.d(Error.TAG_ERROR_RESPONSE, response.message());
+                    }
                 } else {
                     managementView.onDrinkFail(Error.TAG_SYSTEM_BUSY);
                     Log.d(Error.TAG_ERROR_RESPONSE, response.message());

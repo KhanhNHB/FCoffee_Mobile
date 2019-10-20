@@ -17,11 +17,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginRepository {
-
     AccountService service;
-
     public static String TOKEN = "";
-
     public LoginRepository() {
         service = APIUtils.getAccountService();
     }
@@ -49,11 +46,12 @@ public class LoginRepository {
                         TOKEN = response.body().string();
                         loginView.onLoginSuccess();
                     } catch (Exception e) {
-                        loginView.onLoginFail("Login Fail");
+                        loginView.onLoginFail(Error.TAG_SYSTEM_BUSY);
                         Log.d(Error.TAG_ERROR_RESPONSE, e.getMessage());
                     }
                 } else {
-                        loginView.onLoginFail("Tên đăng nhập và mật khẩu không đúng!");
+                    loginView.onLoginFail("Tên đăng nhập và mật khẩu không đúng!");
+                    Log.d(Error.TAG_ERROR_RESPONSE, response.message());
                 }
             }
 

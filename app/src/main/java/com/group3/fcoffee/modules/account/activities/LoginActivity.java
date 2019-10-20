@@ -24,7 +24,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
 
         initView();

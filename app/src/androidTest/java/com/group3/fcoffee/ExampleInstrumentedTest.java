@@ -2,7 +2,7 @@ package com.group3.fcoffee;
 
 import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.example.fcoffee", appContext.getPackageName());
+        assertEquals("com.group3.fcoffee", appContext.getPackageName());
     }
 }

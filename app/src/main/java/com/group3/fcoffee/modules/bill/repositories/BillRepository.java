@@ -1,6 +1,6 @@
 package com.group3.fcoffee.modules.bill.repositories;
 
-
+import android.util.Log;
 
 import com.group3.fcoffee.common.Error;
 import com.group3.fcoffee.modules.bill.model.DTOresponse.DTOBillList;
@@ -22,30 +22,30 @@ public class BillRepository {
         this.mManagementService = APIUtils.getManagerService();
     }
 
-
     public void getAll(final BillView billView){
-        try{
-            Call<DTOBillList> call = mBillService.getByToken();
+        Call<DTOBillList> call = mBillService.getByToken();
             call.enqueue(new Callback<DTOBillList>() {
                 @Override
                 public void onResponse(Call<DTOBillList> call, Response<DTOBillList> response) {
                     if(response.code() == 200){
-                        DTOBillList dto = new DTOBillList();
-                        dto = response.body();
-                        billView.onBillSuccessGetAllByUsername(dto);
-                    }else{
-                        billView.onBillFail(Error.TAG_ERROR_RESPONSE);
+                        try {
+                            DTOBillList dto = response.body();
+                            billView.onBillSuccessGetAllByUsername(dto);
+                        } catch (Exception ex) {
+                            billView.onBillFail(Error.TAG_SYSTEM_BUSY);
+                            Log.d(Error.TAG_ERROR_RESPONSE, ex.getMessage());
+                        }
+                    } else {
+                        billView.onBillFail(Error.TAG_SYSTEM_BUSY);
+                        Log.d(Error.TAG_ERROR_RESPONSE, response.message());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<DTOBillList> call, Throwable t) {
-                    billView.onBillFail(Error.TAG_ERROR_RESPONSE);
+                    billView.onBillFail(Error.TAG_SYSTEM_BUSY);
+                    Log.d(Error.TAG_ERROR_RESPONSE, t.getMessage());
                 }
             });
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-
     }
 }

@@ -3,11 +3,8 @@ package com.group3.fcoffee.modules.dink.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +23,7 @@ import com.group3.fcoffee.modules.dink.view.DrinkView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DrinkActivity extends AppCompatActivity implements DrinkView, AdapterView.OnItemSelectedListener {
+public class DrinkActivity extends AppCompatActivity implements DrinkView {
 
     private DrinkPresenter mDrinkPresenter;
     private DrinkData mDrinks;
@@ -35,7 +32,6 @@ public class DrinkActivity extends AppCompatActivity implements DrinkView, Adapt
     private ImageView btn_back;
     private Button btn_check_in;
     private int tableNumber;
-    private Spinner mSpinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +45,6 @@ public class DrinkActivity extends AppCompatActivity implements DrinkView, Adapt
     private void initView() {
         btn_back = findViewById(R.id.btn_back);
         btn_check_in = findViewById(R.id.btn_check_in);
-        mSpinner = findViewById(R.id.catgories_spinner);
 
         mRecycleDrink = findViewById(R.id.rcv_drinks);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1);
@@ -64,10 +59,8 @@ public class DrinkActivity extends AppCompatActivity implements DrinkView, Adapt
             }
         });
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.category_array, android.R.layout.simple_list_item_activated_1);
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        mSpinner.setAdapter(adapter);
-        mSpinner.setOnItemSelectedListener(this);
+        mDrinkPresenter = new DrinkPresenter(this);
+        mDrinkPresenter.GetAll();
     }
 
     @Override
@@ -86,12 +79,6 @@ public class DrinkActivity extends AppCompatActivity implements DrinkView, Adapt
 
     @Override
     public void onDrinkSuccessGetByCategoryId(DrinkData drinks) {
-        if (drinks != null) {
-            mDrinks = new DrinkData();
-            mDrinks = drinks;
-            updateRcv();
-
-        }
     }
 
     @Override
@@ -138,21 +125,5 @@ public class DrinkActivity extends AppCompatActivity implements DrinkView, Adapt
         requestBodyDrink.setListDrink(listDrink);
         requestBodyDrink.setTableNumber(tableNumber);
         mDrinkPresenter.AddDrinkForTable(requestBodyDrink);
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (position == 0) {
-            mDrinkPresenter = new DrinkPresenter(this);
-            mDrinkPresenter.GetAll();
-        } else {
-            mDrinkPresenter = new DrinkPresenter(this);
-            mDrinkPresenter.GetByCategoryId(position);
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
     }
 }

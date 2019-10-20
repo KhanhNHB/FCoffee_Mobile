@@ -1,5 +1,7 @@
 package com.group3.fcoffee.modules.billInfo.repositories;
 
+import android.util.Log;
+
 import com.group3.fcoffee.common.Error;
 import com.group3.fcoffee.modules.billInfo.model.DTOresponse.DTOBillInfoList;
 import com.group3.fcoffee.modules.billInfo.service.BillInfoService;
@@ -21,28 +23,31 @@ public class BillInfoRepository {
     }
 
     public void getAll(final BillInfoView billInfoView, int billId){
-        try {
-            Call<DTOBillInfoList> call = mBillInfoService.getBillInfoByBillId(billId);
+
+        Call<DTOBillInfoList> call = mBillInfoService.getBillInfoByBillId(billId);
             call.enqueue(new Callback<DTOBillInfoList>() {
                 @Override
                 public void onResponse(Call<DTOBillInfoList> call, Response<DTOBillInfoList> response) {
                     if(response.code() == 200){
-                        DTOBillInfoList dto = new DTOBillInfoList();
-                        dto = response.body();
-                        billInfoView.onBillInfoSuccessGetAllByBillId(dto);
+                        try {
+                            DTOBillInfoList dto = response.body();
+                            billInfoView.onBillInfoSuccessGetAllByBillId(dto);
+                        } catch (Exception ex) {
+                            billInfoView.onBillFail(Error.TAG_SYSTEM_BUSY);
+                            Log.d(Error.TAG_ERROR_RESPONSE, ex.getMessage());
+                        }
                     }else{
-                        billInfoView.onBillFail(Error.TAG_ERROR_RESPONSE);
+                        billInfoView.onBillFail(Error.TAG_SYSTEM_BUSY);
+                        Log.d(Error.TAG_ERROR_RESPONSE, response.message());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<DTOBillInfoList> call, Throwable t) {
-                    billInfoView.onBillFail(Error.TAG_ERROR_RESPONSE);
-
+                    billInfoView.onBillFail(Error.TAG_SYSTEM_BUSY);
+                    Log.d(Error.TAG_ERROR_RESPONSE, t.getMessage());
                 }
             });
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
+
     }
 }
