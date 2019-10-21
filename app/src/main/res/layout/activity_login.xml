@@ -39,7 +39,6 @@
                 android:layout_marginBottom="@dimen/dp20"
                 android:drawableLeft="@mipmap/ic_account_signin"
                 android:drawablePadding="@dimen/dp10"
-                android:text="khanhnhb"
                 android:hint="Tên đăng nhập"
                 />
         </LinearLayout>
@@ -56,7 +55,6 @@
                 android:layout_marginTop="@dimen/dp10"
                 android:drawableLeft="@mipmap/ic_lock"
                 android:drawablePadding="@dimen/dp10"
-                android:text="123"
                 android:hint="Mật khẩu"
                 />
         </LinearLayout>

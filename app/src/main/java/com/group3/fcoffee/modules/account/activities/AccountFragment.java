@@ -22,10 +22,15 @@ import com.squareup.picasso.Picasso;
 public class AccountFragment extends Fragment implements AccountView {
 
     private View mView;
-    private TextView mTxtFullName, mTxtAccount, mTxtPassword, mTxtRole;
+    private TextView mTxtFullName;
     private ImageView mImgAvatar;
     private DTOAccountResponse mAccount;
     private AccountPresenter mAccountPresenter;
+
+    private TextView mTextViewUsername;
+    private TextView mTextViewFullname;
+    private TextView mTextViewRole;
+    private TextView mTextViewStatus;
 
     public static AccountFragment newInstance() {
         AccountFragment fragment = new AccountFragment();
@@ -50,11 +55,13 @@ public class AccountFragment extends Fragment implements AccountView {
 
     private void initView(){
         mTxtFullName = mView.findViewById(R.id.txt_fullname);
-        mTxtAccount = mView.findViewById(R.id.txt_account);
-        mTxtPassword = mView.findViewById(R.id.txt_password);
-        mTxtPassword.setTransformationMethod(new PasswordTransformationMethod());
         mImgAvatar = mView.findViewById(R.id.imgAvatar);
-        mTxtRole = mView.findViewById(R.id.txt_role);
+
+        mTextViewUsername = mView.findViewById(R.id.tv_username_account);
+        mTextViewFullname = mView.findViewById(R.id.tv_fullname_account);
+        mTextViewRole = mView.findViewById(R.id.tv_role_account);
+        mTextViewStatus = mView.findViewById(R.id.tv_disable_account);
+
     }
 
     private void initData(){
@@ -80,10 +87,13 @@ public class AccountFragment extends Fragment implements AccountView {
                 .error(R.mipmap.ic_launcher)
                 .placeholder(R.mipmap.ic_launcher)
                 .into(mImgAvatar);
-        mTxtAccount.setText(mAccount.getAccountData().getUsername());
-//        mTxtPassword.setTransformationMethod(new PasswordTransformationMethod());
-//        mTxtPassword.setText(mAccount.getAccountData().getPassword());
-        mTxtRole.setText(mAccount.getAccountData().getRole() == 1 ? "Quản lý" : "Nhân viên");
+
+        mTextViewUsername.setText(mAccount.getAccountData().getUsername());
+        mTextViewFullname.setText(mAccount.getAccountData().getFullname());
+        mTextViewRole.setText(mAccount.getAccountData().getRole() == 1? "Quản lý" : "Nhân viên");
+        mTextViewStatus.setText(mAccount.getAccountData().isDisable() == false ? "Đang hoạt động" : "Đang tạm khóa");
+
+
     }
 
     @Override
