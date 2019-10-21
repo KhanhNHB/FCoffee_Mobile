@@ -32,12 +32,14 @@ public class DrinkActivity extends AppCompatActivity implements DrinkView {
     private ImageView btn_back;
     private Button btn_check_in;
     private int tableNumber;
+    private int count;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink);
 
+        count = 0;
         initView();
         initData();
     }
@@ -116,14 +118,18 @@ public class DrinkActivity extends AppCompatActivity implements DrinkView {
             return;
         }
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("table_number");
+        if (count == 0) {
+            Intent intent = getIntent();
+            Bundle bundle = intent.getBundleExtra("table_number");
 
-        tableNumber = bundle.getInt("number");
+            tableNumber = bundle.getInt("number");
 
-        RequestBodyDrink requestBodyDrink = new RequestBodyDrink();
-        requestBodyDrink.setListDrink(listDrink);
-        requestBodyDrink.setTableNumber(tableNumber);
-        mDrinkPresenter.AddDrinkForTable(requestBodyDrink);
+            RequestBodyDrink requestBodyDrink = new RequestBodyDrink();
+            requestBodyDrink.setListDrink(listDrink);
+            requestBodyDrink.setTableNumber(tableNumber);
+            mDrinkPresenter.AddDrinkForTable(requestBodyDrink);
+            count++;
+        }
+
     }
 }

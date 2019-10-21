@@ -23,7 +23,8 @@ public class BillRepository {
     }
 
     public void getAll(final BillView billView){
-        Call<DTOBillList> call = mBillService.getByToken();
+        try {
+            Call<DTOBillList> call = mBillService.getByToken();
             call.enqueue(new Callback<DTOBillList>() {
                 @Override
                 public void onResponse(Call<DTOBillList> call, Response<DTOBillList> response) {
@@ -47,5 +48,8 @@ public class BillRepository {
                     Log.d(Error.TAG_ERROR_RESPONSE, t.getMessage());
                 }
             });
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 }
