@@ -6,15 +6,9 @@
         android:name="com.google.android.gms.vision.DEPENDENCIES"
         android:value="barcode" />
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
-
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -23,18 +17,17 @@
         android:roundIcon="@drawable/ic_icon_app"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.group3.fcoffee.modules.table.activity.PictureBarcodeActivity"></activity>
-        <activity android:name="com.group3.fcoffee.modules.billInfo.activity.BillInfoActivity" />
-        <activity android:name="com.group3.fcoffee.modules.account.activities.LoginActivity">
+        <activity android:name=".activities.SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.group3.fcoffee.modules.table.activity.TableActivity"></activity>
-        <activity android:name="com.group3.fcoffee.modules.table.activity.TableDetailActivity"></activity>
-        <activity android:name="com.group3.fcoffee.modules.dink.activity.DrinkActivity" />
+        <activity android:name=".activities.TableActivity" />
+        <activity android:name=".activities.TableDetailActivity" />
+        <activity android:name=".activities.ProductActivity" />
+        <activity android:name=".activities.BillInfoActivity"/>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

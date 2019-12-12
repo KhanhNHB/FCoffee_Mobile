@@ -7,8 +7,8 @@
         android:id="@+id/ll_button_bill"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp5"
-        android:layout_marginBottom="@dimen/dp5"
+        android:layout_margin="@dimen/dp10"
+        android:background="@drawable/custom_frame_border"
         android:orientation="horizontal"
         android:padding="@dimen/dp5"
         android:weightSum="6">
@@ -16,24 +16,9 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="@dimen/dp20"
-            android:layout_weight="0.5"
-            android:background="@drawable/custom_frame_border"
+            android:layout_margin="@dimen/dp10"
             android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/edtTableCount"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="STT" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dp20"
-            android:layout_weight="0.5"
-            android:gravity="center"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <TextView
@@ -41,45 +26,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Số bàn" />
+                android:text="Bàn số" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="@dimen/dp20"
-            android:layout_weight="1"
-            android:background="@drawable/custom_frame_border"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/edtDiscount"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Giảm giá" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dp20"
-            android:layout_weight="1.75"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/edtPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Tổng giá" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dp20"
-            android:layout_weight="2.25"
-            android:background="@drawable/custom_frame_border"
+            android:layout_margin="@dimen/dp10"
+            android:layout_weight="3"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -89,6 +43,22 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="Thời gian" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp20"
+            android:layout_weight="1.75"
+            android:layout_margin="@dimen/dp10"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/edtPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Tổng giá" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
